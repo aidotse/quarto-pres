@@ -1,0 +1,390 @@
+---
+title: "A Template for Quarto-Reveal.js Presentations"
+subtitle: (Fancier Than Powerpoint or Google Slides)
+author: "Main Author / Awesome Position @ AI Sweden"
+format:
+  revealjs:
+    from: markdown+emoji
+    code-fold: false
+    logo: "./assets/aise-yellow.png"
+    footer: "Presentation Footer"
+    overview: true
+    slide-number: "c/t"
+    transition: fade
+    css: style.css
+    highlight-style: dracula
+    width: 1920
+    height: 1080
+    echo: true
+    code-line-numbers: false
+    title-slide-attributes:
+        data-background-image: ./assets/summer.png
+        data-background-size: cover
+        data-background-repeat: no-repeat
+        data-background-opacity: "0.7"
+        data-state: "hide-ui"
+---
+
+## Simple Centered Bullet Points
+
+::: {style="height: 80%; display: flex; flex-direction: column; justify-content: center;"}
+
+- Motivation
+- This first amazing section of my presentation
+- 10 min. break :coffee:
+- The second amazing section of my presentation
+- Discussion & Q/A session
+
+:::
+
+
+## {background-image="assets/logowall.png" background-size="contain" data-state="hide-ui"}
+
+::: {.absolute bottom="50%" right="45%" style="font-size: 0.5em; color: #ffffff; background-color: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px;"}
+Full slide image
+:::
+
+## Embedded Image {background-image="assets/logowall.png" background-size="60%"}
+
+## {background-iframe="https://www.youtube.com/embed/Vpu3vou0cRE?autoplay=1&controls=0&rel=0" background-interactive="true"}
+
+## Embedding IFrames {background-color="#FCFBFA"}
+
+```{=html}
+<div style="margin-top: 120px; width: 100%; height: 800px; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 30px; overflow: hidden;">
+  <iframe src="https://datawrapper.dwcdn.net/wQR5S" style="flex: 1; height: 100%; border: none; transform: scale(1.04); transform-origin: center center;" scrolling="no"></iframe>
+  <iframe src="https://datawrapper.dwcdn.net/jWDre" style="flex: 1; height: 100%; border: none; transform: scale(1.04); transform-origin: center center;" scrolling="no"></iframe>
+  <iframe src="https://datawrapper.dwcdn.net/hOCCz" style="flex: 1; height: 100%; border: none; transform: scale(1.04); transform-origin: center center;" scrolling="no"></iframe>
+</div>
+```
+
+## A Simple Incremental List
+
+::: {.incremental .spaced-list style="margin-top: 10%;"}
+
+- **In the U.S.**: an unprecedented 741 AI-related legislative bills were introduced across 30 states by early 2026 [Predictions for 2026: More AI, More Litigation](https://www.esquiresolutions.com/predictions-for-2026-more-ai-more-litigation/)
+
+- **In Europe**: Artificial Intelligence Act (EU AI Act), the Digital Operational Resilience Act (DORA), the General Data Protection Regulation (GDPR), ...
+
+- **Result:** 62% of European organizations are actively seeking sovereign AI architectures, a trend led heavily by the banking sector (76%) and organizations in Germany (73%) and Switzerland (64%). [Europe Seeking Greater AI Sovereignty, Accenture Report Finds](https://newsroom.accenture.com/news/2025/europe-seeking-greater-ai-sovereignty-accenture-report-finds)
+:::
+
+
+
+## {auto-animate="true"}
+
+::: {style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 1em; font-weight: bold;"}
+Auto Animate Feature for Smooth Transitions
+:::
+
+## {auto-animate="true"}
+
+::: {style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 2em; font-weight: bold;"}
+<span style="color: #FECB00;">Auto Animate Feature</span> for Smooth Transitions
+:::
+
+
+
+## Manual Logo Wall
+
+```{=html}
+<div style="width: 100%; margin-top: 200px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 80px;">
+  <img src="assets/aise-white.png" style="height: 200px;transform: translateX(-20px);">
+  <img src="assets/aise-yellow.png" style="height: 200px; transform: translateY(0px);">
+  <img src="assets/aise-white.png" style="height: 200px; transform: translateY(0px);">
+  <img src="assets/aise-yellow.png" style="height: 200px;">
+  <div style="flex-basis: 100%; height: 0; margin: 0; padding: 0;"></div>
+  <img src="assets/aise-white.png" style="height: 200px;">
+  <img src="assets/aise-yellow.png" style="height: 200px;">
+  <img src="assets/aise-white.png" style="height: 200px;">
+</div>
+```
+
+## Code Highlighting & Multicolumn
+
+::::: {style="margin-top: 5%;"}
+
+<div style="margin-top: 10px;"></div>
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```Dockerfile {code-line-numbers="18-26|6-16"}
+# syntax=docker/dockerfile:1.4
+
+# ---- STAGE 1: Builder --------------------------------
+FROM python:3.12-slim-bookworm AS builder
+
+COPY pyproject.toml uv.lock ./
+
+# Export requirements text locally
+RUN uv export --frozen --no-dev --group training \
+--group gaudi --no-hashes --no-emit-project \
+--format requirements-txt > requirements.txt
+
+# Filter out hardware-specific packages to protect the 
+# base image binaries
+RUN grep -vE '^(torch|torchvision|torchaudio|vllm|nvidia|triton)' \
+requirements.txt > requirements.final.txt
+
+# ---- STAGE 2: Production ------------------------------
+# Base Image MUST match driver version (see hl-smi)
+FROM vault.habana.ai/gaudi-docker/1.23.0/ubuntu22.04\
+     /habanalabs/pytorch-installer-2.9.0:latest
+
+RUN uv pip install --no-deps -r requirements.final.txt
+
+# Expect application code to be mounted at runtime.
+CMD ["/bin/bash"]
+
+
+```
+
+:::
+
+::: {.column width="50%"}
+
+```bash {.number-lines}
+#!/bin/bash
+...
+IMAGE_NAME="$1"
+
+docker run -it --rm \
+  --runtime=habana \
+  --privileged \
+  --cap-add=sys_nice \
+  --cap-add=IPC_LOCK \
+  --ipc=host \
+  --net=host \
+  --ulimit memlock=-1:-1 \
+  --ulimit stack=67108864 \
+  -e HABANA_VISIBLE_DEVICES=$DEVICE_ID \
+  -e PT_HPU_ENABLE_CPU_FALLBACK_LOGGING=1 \
+  -e DDP_SHARED_ID=$RANDOM \
+  -v "$PROJECT_ROOT":/workspace \
+  -v ~/.cache/huggingface:/workspace/cache \
+  "$IMAGE_NAME" \
+  "$@"
+
+```
+
+:::
+
+::::
+
+:::::
+
+
+## Images synchronized to list items
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+
+:::: {style="margin-top: 10%;"}
+
+<ul class="spaced-list">
+  
+  <li class="fragment" data-fragment-index="0">
+    First point in list: White AI.SE logo
+  </li>
+  <br>
+  <li class="fragment" data-fragment-index="1">
+    Second point in list: Gold AI.SE logo
+  </li>
+</ul>
+
+::::
+
+::::
+
+
+:::: {.column width="50%"}
+
+<div class="r-stack" style="width: 100%; margin-top: 10%;">
+  
+  <img class="fragment fade-in-then-out" data-fragment-index="0" src="assets/aise-white.png" style="width: 100%; margin: 0 auto;">
+
+  <img class="fragment fade-in" data-fragment-index="1" src="assets/aise-yellow.png" style="width: 100%; margin: 0 auto;">
+</div>
+
+::::
+
+:::::
+
+## 
+
+::: {style="text-align: center; margin-top: 10%;"}
+<h2 style="font-size: 1.3em; line-height: 1.3;">
+  This is a focus slide<br>
+  <span style="color: #FECB00; font-weight: bold;">With a really important message</span>
+</h2>
+:::
+
+<div style="margin-top: 60px;"></div>
+
+:::: {.columns style="text-align: center; font-size: 1.1em;"}
+
+::: {.column width="50%"}
+<div style="padding: 20px; border-top: 3px solid #4CAF50;">
+  <strong style="font-size: 1.1em; color: #4CAF50;">To Be</strong><br>
+  <br>
+  There are many advantages to being.
+</div>
+:::
+
+::: {.column width="50%"}
+<div style="padding: 20px; border-top: 3px solid #FF9800;">
+  <strong style="font-size: 1.1em; color: #FF9800;">Or Not To Be</strong><br>
+  <br>
+  Would be best for problems not to be.
+</div>
+:::
+
+::::
+
+<div style="margin-top: 80px;"></div>
+
+::: {style="text-align: center; font-size: 1.1em; margin: 0 auto; width: 90%; color: #DDDDDD;"}
+Conclusion and take-away message
+:::
+
+## Cards Example
+
+<div style="margin-top: 5%;"></div>
+
+:::: {.columns}
+
+::: {.column width="32%"}
+<div style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #4CAF50; padding: 20px; border-radius: 8px; font-size: 0.85em; box-sizing: border-box; height: 100%;">
+<p style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; margin-top: 0;">
+<strong style="font-size: 1.1em; color: #ffffff;">Card 1</strong> <span style="color: #aaaaaa; font-size: 0.9em;">(This is Card 1)</span>
+</p>
+<p style="margin-bottom: 0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ipsum turpis, euismod nec turpis eu, posuere ullamcorper lacus.</p>
+</div>
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="32%"}
+<div style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #2196F3; padding: 20px; border-radius: 8px; font-size: 0.85em; box-sizing: border-box; height: 100%;">
+<p style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; margin-top: 0;">
+<strong style="font-size: 1.1em; color: #ffffff;">Card 2</strong> <span style="color: #aaaaaa; font-size: 0.9em;">(This is Card 2)</span>
+</p>
+<p style="margin-bottom: 0;">Curabitur convallis lectus id sapien eleifend, vitae suscipit urna fermentum. Quisque a tortor vitae turpis ullamcorper venenatis. Pellentesque condimentum ornare sem, non elementum quam gravida in. Nulla eget vehicula sem, id lacinia nisi. Suspendisse eu finibus sem, fermentum laoreet nisl. Mauris sed diam porta ante dapibus luctus quis et mi. Sed a lacus elementum, luctus ante pharetra, fermentum libero.</p>
+</div>
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="32%"}
+<div style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #E63946; padding: 20px; border-radius: 8px; font-size: 0.85em; box-sizing: border-box; height: 100%;">
+<p style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; margin-top: 0;">
+<strong style="font-size: 1.1em; color: #ffffff;">Card 3</strong> <span style="color: #aaaaaa; font-size: 0.9em;">(This is Card 3)</span>
+</p>
+<p style="margin-bottom: 0;">Mauris a fermentum purus. Morbi posuere lorem sit amet finibus blandit. Curabitur lacinia et nisi ac tempor. Quisque eu rhoncus nulla. Pellentesque convallis iaculis velit et ornare. Quisque venenatis viverra est. Praesent quis enim gravida, viverra enim condimentum, accumsan lacus.</p>
+</div>
+:::
+
+::::
+
+## Question and Multiple Choice Answer
+
+<div style="margin-top: 5%; margin-bottom: 2%; font-size: 1.05em;">
+
+</div>
+
+:::: {.columns}
+
+::: {.column width="45%"}
+<div style="box-sizing: border-box; background-color: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 8px; height: 100%;">
+<p style="margin-top: 0; margin-bottom: 20px;"><span style="background-color: #333; color: #ccc; padding: 4px 10px; border-radius: 12px; font-size: 0.7em; font-family: monospace;">Lorem Ipsum</span></p>
+
+<strong style="color: #FF9800; font-family: monospace; font-size: 1em;">Question</strong>
+<h3 style="font-size: 1.2em; color: #ffffff; margin-top: 5px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; line-height: 1.3;">Lorem ipsum dolor sit amet, consectetur adipiscing elit.?</h3>
+
+<strong style="font-size: 1em; color: #2196F3; font-family: monospace;">Context</strong>
+<p style="font-size: 0.85em; color: #dddddd; line-height: 1.5; margin-top: 10px; margin-bottom: 0;">Mauris ipsum turpis, euismod nec turpis eu, posuere ullamcorper lacus. Curabitur convallis lectus id sapien eleifend, vitae suscipit urna fermentum.</p>
+</div>
+:::
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="50%"}
+<div style="box-sizing: border-box; background-color: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 8px; height: 100%; font-size: 0.85em;">
+
+<strong style="color: #ffffff; font-family: monospace; font-size: 1.1em; display: block; margin-bottom: 15px;">Options</strong>
+
+<div style="border: 1px solid rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 6px; margin-bottom: 10px; background-color: rgba(255,255,255,0.05);"><strong style="color: #aaaaaa; margin-right: 10px; font-family: monospace;">Option A</strong> Curabitur convallis</div>
+<div style="border: 2px solid #4CAF50; padding: 10px 15px; border-radius: 6px; margin-bottom: 10px; background-color: rgba(76, 175, 80, 0.1);"><strong style="color: #4CAF50; margin-right: 10px; font-family: monospace;">Option B (correct)</strong>Praesent quis</div>
+<div style="border: 1px solid rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 6px; margin-bottom: 10px; background-color: rgba(255,255,255,0.05);"><strong style="color: #aaaaaa; margin-right: 10px; font-family: monospace;">Option C</strong> Quisque eu rhoncus nulla</div>
+<div style="border: 1px solid rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 6px; margin-bottom: 25px; background-color: rgba(255,255,255,0.05);"><strong style="color: #aaaaaa; margin-right: 10px; font-family: monospace;">Option D</strong> Quisque a tortor vitae</div>
+
+<div style="border-left: 4px solid #aaaaaa; padding-left: 15px; margin-top: 25px;"><strong style="color: #aaaaaa; font-family: monospace;">Explanation</strong><p style="color: #aaaaaa; margin-top: 5px; margin-bottom: 0;">Praesent quis enim gravida, viverra enim condimentum, accumsan lacus. Suspendisse eu finibus sem, fermentum laoreet nisl.</p></div>
+
+</div>
+:::
+
+::::
+
+## Simple Table
+
+<div style="font-size: 0.95em; color: gray; margin-bottom: 5%; margin-top: 5%;">
+This is a description of my awesome table
+</div>
+
+::: {.spaced-list style="margin-top: 5%;"}
+
+<div style="margin-top: 4%;"></div>
+| Feature | `all-MiniLM-L6-v2` | `all-mpnet-base-v2` |
+| :--- | :--- | :--- |
+| **Base Architecture** | Distilled BERT | MPNet (Masked & Permuted) |
+| **Transformer Layers** | 6 | 12 |
+| **Embedding Dimension** | 384 | 768 |
+| **Parameter Count** | ~22.7 Million | ~109 Million |
+| **Relative Speed** | ~5x Faster | Baseline (1x) |
+| **VRAM Footprint** | Low | High |
+:::
+
+## Credits Slide
+
+<div style="margin-top: 5%;"></div>
+
+:::: {.columns}
+
+::: {.column width="48%"}
+<div style="box-sizing: border-box; background-color: rgba(255, 255, 255, 0.02); border-top: 4px solid #FECB00; padding: 30px; border-radius: 8px; height: 100%;">
+<h2 style="margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; color: #FECB00; font-size: 1.4em;">AI Sweden</h2>
+<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Elara Vance</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Data Alchemist</span></div>
+<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Julian Thorne</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// MLOps Whisperer</span></div>
+<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Maya Lin</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Tensor Wrangler</span></div>
+<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Silas Sterling</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// LLM Architect</span></div>
+<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Clara Rossi</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Semantic Engineer</span></div>
+<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Henrik Berg</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Neural Navigator</span></div>
+<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Sofia Chen</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Chief Model Orchestrator</span></div>
+<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Marcus Reed</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Initiative Commander</span></div>
+<div style="margin-bottom: 0;"><strong style="color: #ffffff; font-size: 0.85em;">Elena Rostova</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Operations Synthesizer</span></div>
+</div>
+:::
+
+::: {.column width="48%"}
+<div style="display: flex; flex-direction: column;">
+
+<div style="box-sizing: border-box; background-color: rgba(255, 255, 255, 0.02); border-top: 4px solid #2196F3; padding: 30px; border-radius: 8px;">
+<h2 style="margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; color: #2196F3; font-size: 1.4em;">Project Partner</h2>
+<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Felix Carter</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Compute Pioneer</span></div>
+<div style="margin-bottom: 0;"><strong style="color: #ffffff; font-size: 0.85em;">Kaelen Voss</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Lead Inference Architect</span></div>
+</div>
+
+<div style="margin-top: 150px; text-align: center;">
+<span style="color: #aaaaaa; font-size: 0.8em; display: block; margin-bottom: 15px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px;">Project Co-funded by</span><br>
+\<Financeer logo\>
+</div>
+
+</div>
+:::
+::::

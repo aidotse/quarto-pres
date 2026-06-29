@@ -1,0 +1,60 @@
+.reveal {
+  color: #cecece;
+  font-size: 42px;
+  font-family: "Office Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  color: #cecece;
+  font-family: "Office Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: Bold;
+  text-transform: none;
+  text-shadow: none;
+}
+
+/* Universal background color, sits underneath backgrounds, etc. */
+body.reveal-viewport {
+    background-color: #121F2B; 
+}
+
+.reveal h1 { /* Used for the title slide heading */
+  font-size: 1.7em;
+  color: #ffffff
+}
+.reveal h2 { /* Used for normal slide headings */
+  font-size: 1.8em;
+}
+.reveal h3 { /* Used for sub-slide headings */
+  font-size: 1.8em;
+}
+.reveal h4 { /* Could be used for intra-slide headings */
+  font-size: 1.5em;
+}
+.reveal .sourceCode {
+  font-size: 22px;
+}
+
+/* Hide the small global logo and footer ONLY on the title slide */
+.reveal:has(#title-slide.present) .slide-logo,
+
+/* Hide the footer when the 'hide-ui' state is active */
+.hide-ui .footer {
+    display: none !important;
+}
+
+/* Hide the global logo when the 'hide-ui' state is active */
+.hide-ui .slide-logo {
+    display: none !important;
+}
+
+.reveal .spaced-list li {
+  margin-bottom: 50px !important; 
+}
+
+.reveal pre code {
+    max-height: 100% !important;
+  }
