@@ -1,0 +1,22 @@
+# --- Quarto Build Artifacts ---
+.quarto/
+*_files/
+*_cache/
+
+# Ignore the rendered HTML (Optional, but recommended if using CI/CD)
+# Comment this out if you need to host directly from the main branch!
+*.html
+*.pdf
+
+# --- Python & Environment ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.env
+
+# --- OS Generated Files ---
+.DS_Store
+Thumbs.db
+
+*.zip
