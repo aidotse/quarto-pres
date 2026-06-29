@@ -1,0 +1,49 @@
+image: ubuntu:22.04
+
+# Define our stages
+stages:
+  - test
+  - deploy
+
+.setup_quarto: &setup_quarto
+  before_script:
+    - apt-get update && apt-get install -y curl wget
+    - echo "Downloading latest Quarto CLI..."
+    - LATEST_URL=$(curl -s https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest | grep "browser_download_url.*linux-amd64.deb" | cut -d '"' -f 4)
+    - wget $LATEST_URL -O quarto-latest.deb
+    - echo "Installing Quarto..."
+    - apt-get install ./quarto-latest.deb -y
+
+# --- JOB 1: Test the build on Merge Requests ---
+test-build:
+  stage: test
+  <<: *setup_quarto
+  rules:
+    # Trigger this job ONLY when a Merge Request is opened/updated
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  script:
+    - echo "Testing Quarto build..."
+    - quarto render index.qmd
+    - echo "✅ Build successful! Safe to merge."
+
+# --- JOB 2: Deploy to Pages from the main branch ---
+pages:
+  stage: deploy
+  <<: *setup_quarto
+  rules:
+    # Trigger this job ONLY when code lands on the main branch
+    - if: $CI_COMMIT_BRANCH == "main"
+  script:
+    - echo "Rendering production presentation..."
+    - quarto render index.qmd
+    
+    - mkdir public
+    - mv index.html public/
+    - mv index_files/ public/
+    - mv assets/ public/
+    - mv style.css public/
+    
+    - echo "✅ Deployment package ready!"
+  artifacts:
+    paths:
+      - public
