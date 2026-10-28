@@ -187,13 +187,25 @@
       if (!el || !slide.contains(el)) continue;
       if (!entry.done) {
         entry.done = true;
+        entry.stale = false;
         entry.init(el);
+      } else if (entry.stale) {
+        entry.stale = false;
+        if (el.classList.contains("js-plotly-plot")) Plotly.Plots.resize(el);
       }
       if (entry.step) entry.step(el, fragmentIndex(slide));
     }
     sparklines(slide);
     if (animate) countUp(slide);
   }
+
+  /* Called by responsive.js after the canvas size changes. Charts on hidden
+     slides have no size, so they are only marked and resized when shown. */
+  Deck.resize = function () {
+    for (const entry of registry) entry.stale = true;
+    for (const el of document.querySelectorAll(".spark[data-values]")) el.replaceChildren();
+    if (window.Reveal && Reveal.isReady()) activate(Reveal.getCurrentSlide(), { animate: false });
+  };
 
   function boot() {
     readColors();

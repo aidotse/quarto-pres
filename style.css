@@ -33,6 +33,10 @@
   --grid: rgba(255, 255, 255, 0.07);
   --axis: rgba(255, 255, 255, 0.22);
 
+  /* Logical canvas size, kept up to date by assets/js/responsive.js */
+  --slide-w: 1920px;
+  --slide-h: 1080px;
+
   /* Mermaid (read by Quarto's mermaid theme CSS) */
   --mermaid-bg-color: var(--surface);
   --mermaid-edge-color: var(--muted);
@@ -116,6 +120,8 @@ body.reveal-viewport {
 .reveal .slides section.slide.level1 {
   text-align: left;
   padding-left: 60px;
+  height: 100%;
+  justify-content: center;
 }
 .reveal .slides section.slide.level1 h1 {
   font-size: 2.6em;
@@ -424,13 +430,14 @@ body.reveal-viewport {
    Charts (Plotly / D3 containers)
    ========================================================================= */
 
+/* Heights follow the canvas: 720 / 600 / 800 px on the default 1080-high slide */
 .reveal .chart {
   width: 100%;
-  height: 720px;
+  height: calc(var(--slide-h) * 0.667);
   margin-top: 20px;
 }
-.reveal .chart.short { height: 600px; }
-.reveal .chart.tall  { height: 800px; }
+.reveal .chart.short { height: calc(var(--slide-h) * 0.555); }
+.reveal .chart.tall  { height: calc(var(--slide-h) * 0.74); }
 .reveal .chart-note {
   color: var(--muted);
   font-size: 0.45em;
@@ -534,11 +541,32 @@ body.reveal-viewport {
 .reveal svg.mermaid-js .taskTextOutsideLeft { fill: var(--ink) !important; font-size: 20px !important; }
 .reveal svg.mermaid-js .today { stroke: var(--accent) !important; stroke-width: 3px !important; }
 
+/* Row of embedded web pages (e.g. Datawrapper charts) */
+.reveal .iframe-row {
+  margin-top: 120px;
+  width: 100%;
+  height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  overflow: hidden;
+}
+.reveal .iframe-row iframe {
+  flex: 1;
+  height: 100%;
+  border: none;
+  transform: scale(1.04);
+  transform-origin: center center;
+}
+
 /* =========================================================================
    Before / after image comparison slider
    ========================================================================= */
 
 .reveal img-comparison-slider {
+  /* Never taller than ~2/3 of the slide (images are 16:9) */
+  max-width: calc(var(--slide-h) * 1.2);
   --divider-width: 4px;
   --divider-color: var(--accent);
   --default-handle-color: var(--accent);
@@ -598,3 +626,72 @@ body.reveal-viewport {
 .reveal .panel-tabset .tab-content { font-size: 0.8em; padding-top: 24px; }
 .reveal .panel-tabset .sourceCode { font-size: 32px; }
 .reveal .panel-tabset pre code { padding: 20px 26px; line-height: 1.5; }
+
+/* =========================================================================
+   Responsive layout
+   The canvas size follows the window (assets/js/responsive.js). Each content
+   slide is a full-height flex column: the title stays on top, blocks keep
+   their natural height, and spare height is shared out as equal gaps
+   between the blocks and the bottom of the slide.
+   ========================================================================= */
+
+.reveal .slides section {
+  flex-direction: column;
+}
+.reveal .slides section.slide.level2:not(.center) {
+  height: 100%;
+  box-sizing: border-box;
+  padding-bottom: 80px; /* clearance for the footer */
+}
+.reveal .slides section.slide.level2 > * {
+  flex: none;
+}
+/* Captions and leads stay attached to the block they describe */
+.reveal .slides section.slide.level2:not(.center) > :not(h2):not(.lead):not(.chart-note):not(.compare-labels) {
+  margin-top: auto;
+}
+.reveal .slides section.slide.level2:not(.center)::after {
+  content: "";
+  margin-top: auto;
+}
+
+/* Portrait: one column, smaller decorations */
+.portrait .reveal .grid2,
+.portrait .reveal .grid3,
+.portrait .reveal .grid-2-1,
+.portrait .reveal .grid-1-2 {
+  grid-template-columns: 1fr !important;
+}
+.portrait .reveal .grid4 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.portrait .reveal .columns {
+  flex-direction: column;
+}
+.portrait .reveal .columns > .column {
+  width: 100% !important;
+}
+.portrait .reveal .iframe-row {
+  flex-direction: column;
+  height: calc(var(--slide-h) * 0.75);
+  margin-top: 40px;
+}
+.portrait .reveal .iframe-row iframe {
+  width: 100%;
+}
+.portrait .reveal .chart,
+.portrait .reveal .chart.short,
+.portrait .reveal .chart.tall {
+  height: calc(var(--slide-w) * 0.75);
+}
+.portrait .reveal .section-num {
+  position: static;
+  display: block;
+  transform: none;
+  font-size: 260px;
+  margin-bottom: 30px;
+}
+.portrait .reveal .logo-wall {
+  margin-top: 60px;
+  gap: 50px;
+}

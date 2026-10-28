@@ -57,9 +57,20 @@ The `standalone` profile (`_quarto-standalone.yml`) turns on `embed-resources` a
 * `style.css`: Design tokens (colours, chart palette) and the reusable classes used by the slides (`.card`, `.grid3`, `.stat`, `.takeaway`, `.chart`, ...).
 * `assets/`: All images, logos, and background graphics used in the deck.
   * `assets/js/deck.js`: Shared chart theme plus helpers that draw charts when their slide is first shown and step them with fragments.
+  * `assets/js/responsive.js`: Fits the slide canvas to the screen (see below).
   * `assets/vendor/`: Locally bundled libraries ([Plotly](https://plotly.com/javascript/), [D3](https://d3js.org/), [img-comparison-slider](https://github.com/sneas/img-comparison-slider)) and the STIX Two Math font, so the deck never depends on a CDN.
 * `_quarto.yml` / `_quarto-standalone.yml`: Project defaults and the offline single-file profile.
 * `export.sh`: Quick script for exporting all required assets into an `output.zip`.
+
+## 📐 Responsive Layout
+
+The deck adapts to the screen it is shown on instead of letterboxing a fixed 1920×1080 canvas:
+
+* *Landscape* keeps a 1920-wide canvas and grows taller on 16:10 and 4:3 screens; ultrawide screens get a wider canvas (up to 21:9).
+* *Portrait* (phones, tablets) switches to a 1080-wide canvas and stacks columns and grids into a single column.
+* Each slide shares any spare height evenly between its blocks, and charts scale with the canvas.
+
+When designing a slide, use the layout classes (`.grid2`, `.grid-2-1`, `.columns`, `.chart`, ...) rather than fixed pixel sizes so it reflows. PDF export (`?print-pdf`) keeps the fixed 1920×1080 layout.
 
 ## 🎨 What's on the Menu
 
