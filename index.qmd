@@ -2,6 +2,8 @@
 title: "A Template for Quarto-Reveal.js Presentations"
 subtitle: (Fancier Than Powerpoint or Google Slides)
 author: "Main Author / Awesome Position @ AI Sweden"
+bibliography: references.bib
+link-citations: true
 format:
   revealjs:
     from: markdown+emoji
@@ -23,6 +25,7 @@ format:
           <script src="assets/vendor/plotly.min.js"></script>
           <script src="assets/vendor/d3.min.js"></script>
           <script src="assets/vendor/img-comparison-slider.min.js"></script>
+          <script src="assets/vendor/qrcode.js"></script>
           <script src="assets/js/responsive.js"></script>
           <script src="assets/js/deck.js"></script>
     title-slide-attributes:
@@ -34,25 +37,26 @@ format:
         data-state: "hide-ui"
 ---
 
-## Simple Centered Bullet Points
+## Agenda
 
-::: {.vcenter}
-
-- Motivation
-- This first amazing section of my presentation
-- 10 min. break :coffee:
-- The second amazing section of my presentation
-- Discussion & Q/A session
-
+::: {.agenda}
+1. [Text, layout & code](#layout) [Cards, callouts, numbers, equations, tables and code]{.agenda-desc}
+2. [Images & media](#media) [Full-bleed images, video, embeds and image comparisons]{.agenda-desc}
+3. [Diagrams & planning](#diagrams) [Gantt charts, flowcharts and networks]{.agenda-desc}
+4. [Scientific plots for ML](#plots) [Interactive figures for papers and talks]{.agenda-desc}
+5. [Showing model outputs](#outputs) [Conversations, token attributions and qualitative results]{.agenda-desc}
+6. [Presenting](#presenting) [Speaker tools, credits and a closing slide]{.agenda-desc}
 :::
 
 ::: {.notes}
+Each item links to its section: `[Title](#section-id)`, with `{#section-id}` set on the section heading.
+
 Speaker notes live in a `.notes` div. Press **S** to open the speaker view with notes, a timer and a preview of the next slide.
 :::
 
-# [01]{.section-num} Text, layout & code
+# [01]{.section-num} Text, layout & code {#layout}
 
-[Lists, cards, numbers, tabs, equations, tables and code: the everyday building blocks.]{.section-desc}
+[Lists, cards, callouts, numbers, equations, tables and code: the everyday building blocks.]{.section-desc}
 
 ## A Simple Incremental List
 
@@ -94,6 +98,18 @@ Would be best for problems not to be.
 Conclusion and take-away message
 :::
 
+## {auto-animate="true"}
+
+::: {style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 1em; font-weight: bold;"}
+Auto Animate Feature for Smooth Transitions
+:::
+
+## {auto-animate="true"}
+
+::: {style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 2em; font-weight: bold;"}
+<span class="hl">Auto Animate Feature</span> for Smooth Transitions
+:::
+
 ## Cards Example
 
 ::: {.grid3 .mt-1}
@@ -120,6 +136,32 @@ Mauris a fermentum purus. Morbi posuere lorem sit amet finibus blandit. Curabitu
 
 ::: {.takeaway}
 **Takeaway:** a `.takeaway` box closes a slide with the one sentence the audience should remember.
+:::
+
+## Callouts
+
+::: {.grid3 .mt-1}
+
+::: {.callout-note title="Definition"}
+**Perplexity** is the exponential of the average per-token cross-entropy: lower means the model is less surprised by the text.
+:::
+
+::: {.callout-tip title="Tip"}
+Mixed-precision training roughly halves activation memory, usually at no cost in accuracy.
+:::
+
+::: {.callout-warning title="Caveat"}
+Benchmarks that leaked into the pre-training data overstate real-world performance.
+:::
+
+:::
+
+::: {.callout-important title="Important" .mt-1}
+Report final numbers on a held-out test set; never tune hyperparameters on it.
+:::
+
+::: {.notes}
+Quarto's built-in callouts: `.callout-note`, `.callout-tip`, `.callout-warning`, `.callout-important` and `.callout-caution`, with the heading set via `title="..."`.
 :::
 
 ## Stat Tiles with Count-Up
@@ -166,6 +208,10 @@ Markup: `[[94.2]{.count data-to="94.2" data-decimals="1"}[%]{.unit}]{.value}`, s
 
 ## Equations, Explained Step by Step
 
+::: {.lead}
+Scaled dot-product attention [@vaswani2017attention], the core of every transformer.
+:::
+
 $$
 \operatorname{Attention}(Q, K, V) = \operatorname{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
 $$
@@ -181,7 +227,7 @@ Similarity of every query with every key: one score per token pair.
 ::: {.card .orange .fragment}
 [$\sqrt{d_k}$]{.card-title}
 
-Keeps the logits in a range where softmax still has useful gradients.
+Keeps the logits in a range where softmax still has useful gradients.^[For queries and keys with unit-variance entries, $q \cdot k$ has variance $d_k$.]
 :::
 
 ::: {.card .green .fragment}
@@ -193,7 +239,7 @@ Turns scores into weights and returns a weighted average of the values.
 :::
 
 ::: {.notes}
-Math is written in LaTeX and rendered to MathML at build time, with a bundled font, so it works offline and needs no JavaScript.
+Citations come from `references.bib` (`[@key]`) and are listed on the References slide; `^[...]` makes a footnote at the bottom of the slide. Math is written in LaTeX and rendered to MathML at build time, with a bundled font, so it works offline and needs no JavaScript.
 :::
 
 ## Tabsets for Layered Detail
@@ -263,21 +309,27 @@ Praesent quis enim gravida, viverra enim condimentum, accumsan lacus. Suspendiss
 
 :::
 
-## Simple Table
+## Results Table
 
-::: {.lead .mt-1}
-This is a description of my awesome table
+::: {.lead}
+Accuracy (%) on MMLU [@hendrycks2021mmlu], GSM8K [@cobbe2021gsm8k], HumanEval [@chen2021codex] and ARC-Challenge [@clark2018arc].
 :::
 
-::: {.compact-table .mt-1}
-| Feature | `all-MiniLM-L6-v2` | `all-mpnet-base-v2` |
-| :--- | :--- | :--- |
-| **Base Architecture** | Distilled BERT | MPNet (Masked & Permuted) |
-| **Transformer Layers** | 6 | 12 |
-| **Embedding Dimension** | 384 | 768 |
-| **Parameter Count** | ~22.7 Million | ~109 Million |
-| **Relative Speed** | ~5x Faster | Baseline (1x) |
-| **VRAM Footprint** | Low | High |
+::: {.compact-table .results-table}
+| Method | MMLU | GSM8K | HumanEval | ARC-C | Avg. |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| Baseline 7B | 61.2 [±0.7]{.pm} | 48.5 [±1.5]{.pm} | 33.1 [±1.9]{.pm} | 72.4 [±0.9]{.pm} | 53.8 |
+| + Retrieval | [66.0]{.second} [±0.6]{.pm} | 51.2 [±1.3]{.pm} | 35.4 [±2.1]{.pm} | [76.9]{.second} [±0.8]{.pm} | 57.4 |
+| + Chain-of-thought | 64.1 [±0.8]{.pm} | [56.9]{.second} [±1.4]{.pm} | [38.2]{.second} [±1.8]{.pm} | 74.8 [±1.0]{.pm} | [58.5]{.second} |
+| + Self-reflection [ours]{.ours} | **69.4** [±0.5]{.pm} | **60.3** [±1.2]{.pm} | **44.8** [±1.7]{.pm} | **80.1** [±0.7]{.pm} | **63.7** |
+:::
+
+::: aside
+Mean ± std over 5 seeds · **bold**: best · [underlined]{.second}: second best · synthetic numbers
+:::
+
+::: {.notes}
+A plain Markdown table: mark the best value with `**69.4**` and the runner-up with `[66.0]{.second}`. The row containing `[ours]{.ours}` is highlighted automatically. `::: aside` puts a note at the bottom of the slide.
 :::
 
 ## Code Highlighting & Multicolumn
@@ -349,7 +401,7 @@ docker run -it --rm \
 
 ::::
 
-# [02]{.section-num} Images & media
+# [02]{.section-num} Images & media {#media}
 
 [Full-bleed images, video, embedded web content and interactive image comparisons.]{.section-desc}
 
@@ -372,6 +424,35 @@ Full slide image
   <iframe src="https://datawrapper.dwcdn.net/hOCCz" scrolling="no"></iframe>
 </div>
 ```
+
+## Local Video
+
+::: {.grid-2-1}
+
+```{=html}
+<figure class="video-frame">
+  <video data-autoplay loop muted playsinline>
+    <source src="assets/demo.webm" type="video/webm">
+    <source src="assets/demo.mp4" type="video/mp4">
+  </video>
+</figure>
+```
+
+::: {}
+[Demo recording]{.kicker}
+
+Bundled with the deck, so it plays offline: no YouTube, no conference Wi-Fi.
+
+::: {.lead .small .mt-1}
+Starts when the slide opens, pauses when you leave and loops silently. Ship WebM plus an MP4 fallback for Safari.
+:::
+:::
+
+:::
+
+::: {.notes}
+`data-autoplay` makes Reveal play the video when the slide is shown. For a full-bleed version use `## {background-video="assets/demo.mp4" background-video-loop="true" background-video-muted="true"}`.
+:::
 
 ## Before / After Comparison
 
@@ -455,19 +536,7 @@ Works for any pair of same-sized images: raw vs. denoised, ground truth vs. pred
 
 :::::
 
-## {auto-animate="true"}
-
-::: {style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 1em; font-weight: bold;"}
-Auto Animate Feature for Smooth Transitions
-:::
-
-## {auto-animate="true"}
-
-::: {style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 2em; font-weight: bold;"}
-<span class="hl">Auto Animate Feature</span> for Smooth Transitions
-:::
-
-# [03]{.section-num} Diagrams & planning
+# [03]{.section-num} Diagrams & planning {#diagrams}
 
 [Gantt charts, flowcharts and networks, written as text and drawn in the browser.]{.section-desc}
 
@@ -634,7 +703,7 @@ Deck.chart("chart-network", (el) => {
 
 :::
 
-# [04]{.section-num} Scientific plots for ML
+# [04]{.section-num} Scientific plots for ML {#plots}
 
 [The figures ML papers and talks rely on, interactive: hover for values, drag to zoom, double-click to reset, camera icon for an SVG.]{.section-desc}
 
@@ -983,7 +1052,6 @@ Three domains separate cleanly: a domain classifier on these embeddings should b
 
 ```{=html}
 <div id="chart-scaling" class="chart"></div>
-<div class="chart-note">Power-law fits on log–log axes, extrapolated to the next compute budget · synthetic data</div>
 <script>
 Deck.chart("chart-scaling", (el) => {
   const c = Deck.colors, rng = Deck.rng(21);
@@ -1014,6 +1082,10 @@ Deck.chart("chart-scaling", (el) => {
 });
 </script>
 ```
+
+::: {.chart-note}
+Power-law fits in the style of @kaplan2020scaling and @hoffmann2022training, extrapolated to the next compute budget · synthetic data
+:::
 
 ## Pareto Front: Accuracy vs. Cost
 
@@ -1096,9 +1168,129 @@ Drag along any axis to filter runs · click an axis' filter bar to clear it · 9
 The best 10% of runs share a learning rate near 3 × 10⁻⁴ and dropout around 0.1.
 :::
 
-# [05]{.section-num} Presenting
+# [05]{.section-num} Showing model outputs {#outputs}
 
-[Speaker view, overview, live annotation and other built-in tools.]{.section-desc}
+[Conversations, token attributions and qualitative results: show what the model actually does.]{.section-desc}
+
+## LLM Conversation
+
+::: {.chat}
+::: {.msg .user who="User"}
+I take 20 mg atorvastatin daily. My doctor just prescribed clarithromycin for a chest infection. Anything I should know?
+:::
+:::
+
+::: {.grid2 .chat .mt-1}
+
+::: {.msg .bot .fragment .typewriter who="Baseline 7B" fragment-index="0"}
+No major concerns. Both medicines are commonly prescribed and can be taken together. Take clarithromycin with food to avoid stomach upset, and finish the full course.
+
+[✗ Misses the drug interaction]{.verdict .bad .fragment fragment-index="2"}
+:::
+
+::: {.msg .bot .ours .fragment .typewriter who="+ Self-reflection (ours)" fragment-index="1"}
+Yes, check with your doctor first. Clarithromycin blocks CYP3A4, the enzyme that clears atorvastatin, so statin levels can rise and with them the risk of muscle damage. Doctors often pause the statin for the course or choose another antibiotic.
+
+[✓ Flags the CYP3A4 interaction]{.verdict .good .fragment fragment-index="2"}
+:::
+
+:::
+
+::: aside
+Illustrative example, not medical advice.
+:::
+
+::: {.notes}
+Each reply is a fragment with `.typewriter`: it types itself out when revealed. Fragments inside it (the verdicts) are left alone and appear on a later click.
+:::
+
+## Token Attribution
+
+::: {.lead}
+Which input tokens drove the prediction? Click to reveal the attribution, then hover a token for its score.
+:::
+
+```{=html}
+<div id="tokens-drug" class="tokens"></div>
+<script>
+Deck.steps("tokens-drug", {
+  init(el) {
+    Deck.tokens(el, [
+      ["Patient", 0.08], [" was", 0.02], [" prescribed", 0.31], [" 20", 0.06], [" mg", 0.12], [" of", 0.01],
+      [" ator", 0.92], ["vast", 0.85], ["atin", 1.0], [" to", 0.03], [" lower", 0.38], [" LDL", 0.66],
+      [" cholesterol", 0.74], [".", 0.01], [" Which", 0.05], [" drug", 0.41], [" class", 0.47], [" does", 0.02],
+      [" it", 0.14], [" belong", 0.09], [" to", 0.03], ["?", 0.02],
+    ]);
+  },
+  step(el, i) { el.classList.toggle("lit", i >= 0); },
+});
+</script>
+```
+
+::: {.grid2 .mt-1 style="align-items: end;"}
+
+::: {.card .stat .fragment}
+[Prediction]{.label}
+[Statin [p = 0.94]{.unit}]{.value style="font-size: 2.2em;"}
+:::
+
+::: {}
+::: {.scale-legend}
+[low]{.muted} []{.scale-bar} [high attribution]{.muted}
+:::
+
+::: {.lead .small}
+Integrated gradients over a 7B model · subword tokens shown as the model sees them · synthetic scores
+:::
+:::
+
+:::
+
+::: {.notes}
+`Deck.tokens(el, [[token, score], ...])` builds the highlighted text; scores are 0–1. Leading spaces mark word starts, so `" ator", "vast", "atin"` render as one word split into three tokens.
+:::
+
+## Qualitative Results
+
+::: {.grid-2-1 style="grid-template-columns: 2.3fr 1fr; align-items: center;"}
+
+::: {.qual-grid}
+[Input]{.qual-head} [Baseline]{.qual-head} [Ours]{.qual-head .hl} [Ground truth]{.qual-head}
+[![](assets/qual/s1-input.jpg)]{.tile}
+[![](assets/qual/s1-baseline.jpg)]{.tile score="93.4"}
+[![](assets/qual/s1-ours.jpg)]{.tile score="98.1"}
+[![](assets/qual/s1-gt.jpg)]{.tile}
+[![](assets/qual/s2-input.jpg)]{.tile}
+[![](assets/qual/s2-baseline.jpg)]{.tile score="93.5"}
+[![](assets/qual/s2-ours.jpg)]{.tile score="97.8"}
+[![](assets/qual/s2-gt.jpg)]{.tile}
+[![](assets/qual/s3-input.jpg)]{.tile}
+[![](assets/qual/s3-baseline.jpg)]{.tile score="90.7"}
+[![](assets/qual/s3-ours.jpg)]{.tile score="98.1"}
+[![](assets/qual/s3-gt.jpg)]{.tile}
+:::
+
+::: {}
+[Held-out images]{.kicker}
+
+Badges show mIoU (%) against the ground truth. Hover a tile to zoom in.
+
+::: {.legend .mt-1 style="flex-direction: column; gap: 18px; font-size: 0.7em;"}
+[Sky]{style="--c: #3987e5"}
+[Vegetation]{style="--c: #199e70"}
+[Crop field]{style="--c: #FECB00"}
+:::
+
+::: {.takeaway .small}
+The baseline's coarse masks lose thin structures such as tree crowns.
+:::
+:::
+
+:::
+
+# [06]{.section-num} Presenting {#presenting}
+
+[Speaker view, live annotation, credits and a closing slide to hand out the deck.]{.section-desc}
 
 ## Presenter Toolkit
 
@@ -1155,3 +1347,64 @@ Whiteboard and drawing come from the chalkboard plugin, which is turned off in t
 :::
 
 :::
+
+## {#thanks .closing background-image="assets/closing-bg.jpg" background-opacity="0.2" data-state="hide-ui"}
+
+::: {.grid-2-1 style="grid-template-columns: 1.6fr 1fr; align-items: center; height: 100%;"}
+
+::: {}
+[Thank you]{.thanks}
+
+[Questions & discussion]{.thanks-sub}
+
+::: {.contact}
+[Email]{.kicker} name.surname@ai.se
+
+[Web]{.kicker} [ai.se](https://www.ai.se)
+
+[Code]{.kicker} [github.com/aidotse](https://github.com/aidotse)
+:::
+:::
+
+::: {.qr-card}
+```{=html}
+<div class="qr" data-fallback="https://aidotse.github.io/quarto-pres/"></div>
+```
+[Scan for the slides]{.qr-label}
+[]{.qr-url}
+:::
+
+:::
+
+::: {.notes}
+The QR code is generated in the browser from the deck's own URL, so it always points to wherever the slides are hosted. Opened from a local file it uses `data-fallback`; set `data-url` to force a specific link.
+:::
+
+# [A]{.section-num} Appendix {#appendix visibility="uncounted"}
+
+[Backup slides and references. Marked `visibility="uncounted"`, so they don't change the slide count shown during the talk.]{.section-desc}
+
+## Backup: Training Setup {visibility="uncounted"}
+
+::: {.lead}
+Kept for questions; skipped in the main flow.
+:::
+
+::: {.compact-table .mt-1}
+| Setting | Value | Setting | Value |
+| :--- | :--- | :--- | :--- |
+| Optimizer | AdamW (β = 0.9, 0.95) | Hardware | 8 × H100 80 GB |
+| Learning rate | 3 × 10⁻⁴, cosine decay | Precision | bf16 mixed |
+| Warm-up | 800 steps | Training tokens | 50 B |
+| Batch size | 256 sequences × 4k tokens | Wall-clock | 6.5 days |
+| Dropout / weight decay | 0.1 / 0.05 | Seeds | 5 |
+:::
+
+## References {visibility="uncounted"}
+
+::: {#refs}
+:::
+
+## Hidden Slide {visibility="hidden"}
+
+This slide stays in the source but is never shown: handy for drafts, or for slides only some audiences should see.

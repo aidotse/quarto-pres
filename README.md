@@ -59,6 +59,7 @@ The `standalone` profile (`_quarto-standalone.yml`) turns on `embed-resources` a
   * `assets/js/deck.js`: Shared chart theme plus helpers that draw charts when their slide is first shown and step them with fragments.
   * `assets/js/responsive.js`: Fits the slide canvas to the screen (see below).
   * `assets/vendor/`: Locally bundled libraries ([Plotly](https://plotly.com/javascript/), [D3](https://d3js.org/), [img-comparison-slider](https://github.com/sneas/img-comparison-slider)) and the STIX Two Math font, so the deck never depends on a CDN.
+* `references.bib`: BibTeX entries cited with `[@key]`; the bibliography is rendered at build time onto the References slide.
 * `_quarto.yml` / `_quarto-standalone.yml`: Project defaults and the offline single-file profile.
 * `export.sh`: Quick script for exporting all required assets into an `output.zip`.
 
@@ -74,7 +75,16 @@ When designing a slide, use the layout classes (`.grid2`, `.grid-2-1`, `.columns
 
 ## 🎨 What's on the Menu
 
-The deck doubles as a catalogue of elements to copy from: cards, stat tiles with count-up numbers, tabsets, step-by-step equations, before/after image sliders, Mermaid Gantt charts and flowcharts, a draggable D3 network, and a section of interactive scientific plots for ML (training curves, error bars, violins, quantiles, confusion matrix, ROC/PR, 3D embeddings, scaling laws, Pareto fronts, parallel coordinates). Press `S` on any slide to see speaker notes explaining how it is built.
+The deck doubles as a catalogue of elements to copy from, grouped into sections you can jump to from the agenda:
+
+* *Text, layout & code:* cards, callouts, stat tiles with count-up numbers, step-by-step equations, tabsets, a quiz, a paper-style results table (best/second-best marking), code highlighting, citations and footnotes.
+* *Images & media:* full-bleed images, YouTube and web embeds, a local (offline) video, a before/after image slider, a logo wall.
+* *Diagrams & planning:* Mermaid Gantt charts and flowcharts, a draggable D3 network.
+* *Scientific plots for ML:* training curves, error bars, violins, quantiles, confusion matrix, ROC/PR, 3D embeddings, scaling laws, Pareto fronts, parallel coordinates.
+* *Showing model outputs:* an LLM conversation that types itself out, token-level attribution, a qualitative results grid.
+* *Presenting:* speaker tools, credits, a closing slide with a QR code to the hosted deck, and an appendix of backup slides and references that don't count towards the slide number.
+
+Press `S` on any slide to see speaker notes explaining how it is built.
 
 To add a chart, give it a container and register a builder; it is drawn the first time its slide is shown:
 
