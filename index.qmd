@@ -13,10 +13,17 @@ format:
     transition: fade
     css: style.css
     highlight-style: dracula
+    html-math-method: mathml
     width: 1920
     height: 1080
     echo: true
     code-line-numbers: false
+    include-in-header:
+      - text: |
+          <script src="assets/vendor/plotly.min.js"></script>
+          <script src="assets/vendor/d3.min.js"></script>
+          <script src="assets/vendor/img-comparison-slider.min.js"></script>
+          <script src="assets/js/deck.js"></script>
     title-slide-attributes:
         data-background-image: ./assets/summer.png
         data-background-size: cover
@@ -27,7 +34,7 @@ format:
 
 ## Simple Centered Bullet Points
 
-::: {style="height: 80%; display: flex; flex-direction: column; justify-content: center;"}
+::: {.vcenter}
 
 - Motivation
 - This first amazing section of my presentation
@@ -37,26 +44,13 @@ format:
 
 :::
 
-
-## {background-image="assets/logowall.png" background-size="contain" data-state="hide-ui"}
-
-::: {.absolute bottom="50%" right="45%" style="font-size: 0.5em; color: #ffffff; background-color: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px;"}
-Full slide image
+::: {.notes}
+Speaker notes live in a `.notes` div. Press **S** to open the speaker view with notes, a timer and a preview of the next slide.
 :::
 
-## Embedded Image {background-image="assets/logowall.png" background-size="60%"}
+# [01]{.section-num} Text, layout & code
 
-## {background-iframe="https://www.youtube.com/embed/Vpu3vou0cRE?autoplay=1&controls=0&rel=0" background-interactive="true"}
-
-## Embedding IFrames {background-color="#FCFBFA"}
-
-```{=html}
-<div style="margin-top: 120px; width: 100%; height: 800px; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 30px; overflow: hidden;">
-  <iframe src="https://datawrapper.dwcdn.net/wQR5S" style="flex: 1; height: 100%; border: none; transform: scale(1.04); transform-origin: center center;" scrolling="no"></iframe>
-  <iframe src="https://datawrapper.dwcdn.net/jWDre" style="flex: 1; height: 100%; border: none; transform: scale(1.04); transform-origin: center center;" scrolling="no"></iframe>
-  <iframe src="https://datawrapper.dwcdn.net/hOCCz" style="flex: 1; height: 100%; border: none; transform: scale(1.04); transform-origin: center center;" scrolling="no"></iframe>
-</div>
-```
+[Lists, cards, numbers, tabs, equations, tables and code: the everyday building blocks.]{.section-desc}
 
 ## A Simple Incremental List
 
@@ -69,44 +63,224 @@ Full slide image
 - **Result:** 62% of European organizations are actively seeking sovereign AI architectures, a trend led heavily by the banking sector (76%) and organizations in Germany (73%) and Switzerland (64%). [Europe Seeking Greater AI Sovereignty, Accenture Report Finds](https://newsroom.accenture.com/news/2025/europe-seeking-greater-ai-sovereignty-accenture-report-finds)
 :::
 
+##
 
-
-## {auto-animate="true"}
-
-::: {style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 1em; font-weight: bold;"}
-Auto Animate Feature for Smooth Transitions
+::: {.center style="margin-top: 10%;"}
+<h2 style="font-size: 1.3em; line-height: 1.3;">
+  This is a focus slide<br>
+  <span class="hl">With a really important message</span>
+</h2>
 :::
 
-## {auto-animate="true"}
+::: {.grid2 .center .mt-1}
 
-::: {style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 2em; font-weight: bold;"}
-<span style="color: #FECB00;">Auto Animate Feature</span> for Smooth Transitions
+::: {.card .plain .green}
+[To Be]{.card-title style="border: none; color: var(--green);"}
+
+There are many advantages to being.
 :::
 
+::: {.card .plain .orange}
+[Or Not To Be]{.card-title style="border: none; color: var(--orange);"}
 
+Would be best for problems not to be.
+:::
 
-## Manual Logo Wall
+:::
 
-```{=html}
-<div style="width: 100%; margin-top: 200px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 80px;">
-  <img src="assets/aise-white.png" style="height: 200px;transform: translateX(-20px);">
-  <img src="assets/aise-yellow.png" style="height: 200px; transform: translateY(0px);">
-  <img src="assets/aise-white.png" style="height: 200px; transform: translateY(0px);">
-  <img src="assets/aise-yellow.png" style="height: 200px;">
-  <div style="flex-basis: 100%; height: 0; margin: 0; padding: 0;"></div>
-  <img src="assets/aise-white.png" style="height: 200px;">
-  <img src="assets/aise-yellow.png" style="height: 200px;">
-  <img src="assets/aise-white.png" style="height: 200px;">
-</div>
+::: {.center .mt-2 .muted}
+Conclusion and take-away message
+:::
+
+## Cards Example
+
+::: {.grid3 .mt-1}
+
+::: {.card .green}
+[Card 1 [(This is Card 1)]{.muted}]{.card-title}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ipsum turpis, euismod nec turpis eu, posuere ullamcorper lacus.
+:::
+
+::: {.card .blue}
+[Card 2 [(This is Card 2)]{.muted}]{.card-title}
+
+Curabitur convallis lectus id sapien eleifend, vitae suscipit urna fermentum. Quisque a tortor vitae turpis ullamcorper venenatis. Pellentesque condimentum ornare sem, non elementum quam gravida in.
+:::
+
+::: {.card .red}
+[Card 3 [(This is Card 3)]{.muted}]{.card-title}
+
+Mauris a fermentum purus. Morbi posuere lorem sit amet finibus blandit. Curabitur lacinia et nisi ac tempor. Quisque eu rhoncus nulla.
+:::
+
+:::
+
+::: {.takeaway}
+**Takeaway:** a `.takeaway` box closes a slide with the one sentence the audience should remember.
+:::
+
+## Stat Tiles with Count-Up
+
+::: {.lead}
+Headline numbers count up every time the slide is shown.
+:::
+
+::: {.grid4 .mt-2}
+
+::: {.card .stat}
+[Benchmark accuracy]{.label}
+[[94.2]{.count data-to="94.2" data-decimals="1"}[%]{.unit}]{.value}
+[▲ +3.1 pp [vs. baseline]{.muted}]{.delta .up}
+[]{.spark data-values="88.1,88.9,89.4,90.2,90.0,91.1,91.8,92.0,92.9,93.1,93.8,94.2"}
+:::
+
+::: {.card .stat .green}
+[Inference latency (p95)]{.label}
+[[182]{.count data-to="182"}[ms]{.unit}]{.value}
+[▼ −41% [faster]{.muted}]{.delta .up}
+[]{.spark data-values="310,305,298,284,270,262,240,231,214,203,190,182"}
+:::
+
+::: {.card .stat .blue}
+[Training compute]{.label}
+[[1,280]{.count data-to="1280"}[GPU·h]{.unit}]{.value}
+[on 8 × H100]{.muted .delta}
+[]{.spark data-values="40,130,210,330,420,560,650,760,910,1010,1150,1280"}
+:::
+
+::: {.card .stat .red}
+[Hallucination rate]{.label}
+[[4.7]{.count data-to="4.7" data-decimals="1"}[%]{.unit}]{.value}
+[▲ +0.4 pp [needs work]{.muted}]{.delta .down}
+[]{.spark data-values="6.1,5.8,5.5,5.2,4.9,4.6,4.4,4.2,4.1,4.3,4.5,4.7"}
+:::
+
+:::
+
+::: {.notes}
+Markup: `[[94.2]{.count data-to="94.2" data-decimals="1"}[%]{.unit}]{.value}`, sparkline: `[]{.spark data-values="1,3,2,5"}`. The number in the HTML is also the fallback for PDF export.
+:::
+
+## Equations, Explained Step by Step
+
+$$
+\operatorname{Attention}(Q, K, V) = \operatorname{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
+$$
+
+::: {.grid3}
+
+::: {.card .blue .fragment}
+[$QK^\top$]{.card-title}
+
+Similarity of every query with every key: one score per token pair.
+:::
+
+::: {.card .orange .fragment}
+[$\sqrt{d_k}$]{.card-title}
+
+Keeps the logits in a range where softmax still has useful gradients.
+:::
+
+::: {.card .green .fragment}
+[$\operatorname{softmax}(\cdot)\,V$]{.card-title}
+
+Turns scores into weights and returns a weighted average of the values.
+:::
+
+:::
+
+::: {.notes}
+Math is written in LaTeX and rendered to MathML at build time, with a bundled font, so it works offline and needs no JavaScript.
+:::
+
+## Tabsets for Layered Detail
+
+::: {.panel-tabset}
+
+### PyTorch
+
+```python
+for x, y in loader:
+    optimizer.zero_grad()
+    loss = F.cross_entropy(model(x), y)
+    loss.backward()
+    optimizer.step()
 ```
+
+### JAX
+
+```python
+@jax.jit
+def train_step(state, x, y):
+    def loss_fn(params):
+        logits = state.apply_fn(params, x)
+        return optax.softmax_cross_entropy_with_integer_labels(logits, y).mean()
+    grads = jax.grad(loss_fn)(state.params)
+    return state.apply_gradients(grads=grads)
+```
+
+### Why tabs?
+
+- Keep alternatives on **one** slide without crowding it
+- Click a tab live to answer *"how would this look in…?"*
+- Works for code, tables, figures or plain text
+
+:::
+
+## Question and Multiple Choice Answer
+
+::: {.grid2 .quiz .mt-1 style="grid-template-columns: 45fr 50fr; gap: 5%;"}
+
+::: {.card .quiz-q style="border-top: 1px solid var(--line); font-size: 1em;"}
+[Lorem Ipsum]{.tag}
+
+[Question]{.quiz-label style="color: var(--orange);"}
+
+### Lorem ipsum dolor sit amet, consectetur adipiscing elit.?
+
+[Context]{.quiz-label style="color: var(--blue);"}
+
+[Mauris ipsum turpis, euismod nec turpis eu, posuere ullamcorper lacus. Curabitur convallis lectus id sapien eleifend, vitae suscipit urna fermentum.]{style="font-size: 0.85em; color: #dddddd; line-height: 1.5;"}
+:::
+
+::: {.card style="border-top: 1px solid var(--line); font-size: 0.85em;"}
+[Options]{.quiz-label .ink style="display: block; margin-bottom: 15px;"}
+
+[[Option A]{.quiz-label} Curabitur convallis]{.option style="display: block;"}
+[[Option B]{.quiz-label} Praesent quis]{.option .correct style="display: block;"}
+[[Option C]{.quiz-label} Quisque eu rhoncus nulla]{.option style="display: block;"}
+[[Option D]{.quiz-label} Quisque a tortor vitae]{.option style="display: block;"}
+
+::: {.explain .fragment}
+[Explanation]{.quiz-label}
+
+Praesent quis enim gravida, viverra enim condimentum, accumsan lacus. Suspendisse eu finibus sem, fermentum laoreet nisl.
+:::
+:::
+
+:::
+
+## Simple Table
+
+::: {.lead .mt-1}
+This is a description of my awesome table
+:::
+
+::: {.compact-table .mt-1}
+| Feature | `all-MiniLM-L6-v2` | `all-mpnet-base-v2` |
+| :--- | :--- | :--- |
+| **Base Architecture** | Distilled BERT | MPNet (Masked & Permuted) |
+| **Transformer Layers** | 6 | 12 |
+| **Embedding Dimension** | 384 | 768 |
+| **Parameter Count** | ~22.7 Million | ~109 Million |
+| **Relative Speed** | ~5x Faster | Baseline (1x) |
+| **VRAM Footprint** | Low | High |
+:::
 
 ## Code Highlighting & Multicolumn
 
-::::: {style="margin-top: 5%;"}
-
-<div style="margin-top: 10px;"></div>
-
-:::: {.columns}
+:::: {.columns style="margin-top: 5%;"}
 
 ::: {.column width="50%"}
 
@@ -123,7 +297,7 @@ RUN uv export --frozen --no-dev --group training \
 --group gaudi --no-hashes --no-emit-project \
 --format requirements-txt > requirements.txt
 
-# Filter out hardware-specific packages to protect the 
+# Filter out hardware-specific packages to protect the
 # base image binaries
 RUN grep -vE '^(torch|torchvision|torchaudio|vllm|nvidia|triton)' \
 requirements.txt > requirements.final.txt
@@ -173,8 +347,74 @@ docker run -it --rm \
 
 ::::
 
-:::::
+# [02]{.section-num} Images & media
 
+[Full-bleed images, video, embedded web content and interactive image comparisons.]{.section-desc}
+
+## {background-image="assets/logowall.png" background-size="contain" data-state="hide-ui"}
+
+::: {.absolute bottom="50%" right="45%" style="font-size: 0.5em; color: #ffffff; background-color: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px;"}
+Full slide image
+:::
+
+## Embedded Image {background-image="assets/logowall.png" background-size="60%"}
+
+## {background-iframe="https://www.youtube.com/embed/Vpu3vou0cRE?autoplay=1&controls=0&rel=0" background-interactive="true"}
+
+## Embedding IFrames {background-color="#FCFBFA"}
+
+```{=html}
+<div style="margin-top: 120px; width: 100%; height: 800px; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 30px; overflow: hidden;">
+  <iframe src="https://datawrapper.dwcdn.net/wQR5S" style="flex: 1; height: 100%; border: none; transform: scale(1.04); transform-origin: center center;" scrolling="no"></iframe>
+  <iframe src="https://datawrapper.dwcdn.net/jWDre" style="flex: 1; height: 100%; border: none; transform: scale(1.04); transform-origin: center center;" scrolling="no"></iframe>
+  <iframe src="https://datawrapper.dwcdn.net/hOCCz" style="flex: 1; height: 100%; border: none; transform: scale(1.04); transform-origin: center center;" scrolling="no"></iframe>
+</div>
+```
+
+## Before / After Comparison
+
+::: {.grid-2-1 .mt-1}
+
+```{=html}
+<div>
+  <img-comparison-slider>
+    <img slot="first" src="assets/summer.jpg" alt="Input photo">
+    <img slot="second" src="assets/summer-seg.jpg" alt="Segmentation output">
+  </img-comparison-slider>
+  <div class="compare-labels"><span>Input</span><span>Model output</span></div>
+</div>
+```
+
+::: {}
+[Semantic segmentation]{.kicker}
+
+Drag the handle to compare the input with the predicted mask.
+
+::: {.legend .mt-1 style="flex-direction: column; gap: 18px; font-size: 0.7em;"}
+[Sky]{style="--c: #3987e5"}
+[Vegetation]{style="--c: #199e70"}
+[Crop field]{style="--c: #FECB00"}
+:::
+
+::: {.lead .mt-1 .small}
+Works for any pair of same-sized images: raw vs. denoised, ground truth vs. prediction, v1 vs. v2.
+:::
+:::
+
+:::
+
+## Manual Logo Wall
+
+::: {.logo-wall}
+![](assets/aise-white.png){style="transform: translateX(-20px);"}
+![](assets/aise-yellow.png)
+![](assets/aise-white.png)
+![](assets/aise-yellow.png)
+[]{.break}
+![](assets/aise-white.png)
+![](assets/aise-yellow.png)
+![](assets/aise-white.png)
+:::
 
 ## Images synchronized to list items
 
@@ -185,7 +425,7 @@ docker run -it --rm \
 :::: {style="margin-top: 10%;"}
 
 <ul class="spaced-list">
-  
+
   <li class="fragment" data-fragment-index="0">
     First point in list: White AI.SE logo
   </li>
@@ -203,7 +443,7 @@ docker run -it --rm \
 :::: {.column width="50%"}
 
 <div class="r-stack" style="width: 100%; margin-top: 10%;">
-  
+
   <img class="fragment fade-in-then-out" data-fragment-index="0" src="assets/aise-white.png" style="width: 100%; margin: 0 auto;">
 
   <img class="fragment fade-in" data-fragment-index="1" src="assets/aise-yellow.png" style="width: 100%; margin: 0 auto;">
@@ -213,178 +453,701 @@ docker run -it --rm \
 
 :::::
 
-## 
+## {auto-animate="true"}
 
-::: {style="text-align: center; margin-top: 10%;"}
-<h2 style="font-size: 1.3em; line-height: 1.3;">
-  This is a focus slide<br>
-  <span style="color: #FECB00; font-weight: bold;">With a really important message</span>
-</h2>
+::: {style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 1em; font-weight: bold;"}
+Auto Animate Feature for Smooth Transitions
 :::
 
-<div style="margin-top: 60px;"></div>
+## {auto-animate="true"}
 
-:::: {.columns style="text-align: center; font-size: 1.1em;"}
-
-::: {.column width="50%"}
-<div style="padding: 20px; border-top: 3px solid #4CAF50;">
-  <strong style="font-size: 1.1em; color: #4CAF50;">To Be</strong><br>
-  <br>
-  There are many advantages to being.
-</div>
+::: {style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 2em; font-weight: bold;"}
+<span class="hl">Auto Animate Feature</span> for Smooth Transitions
 :::
 
-::: {.column width="50%"}
-<div style="padding: 20px; border-top: 3px solid #FF9800;">
-  <strong style="font-size: 1.1em; color: #FF9800;">Or Not To Be</strong><br>
-  <br>
-  Would be best for problems not to be.
-</div>
+# [03]{.section-num} Diagrams & planning
+
+[Gantt charts, flowcharts and networks, written as text and drawn in the browser.]{.section-desc}
+
+## Gantt Chart
+
+```{mermaid}
+%%| echo: false
+---
+config:
+  themeVariables:
+    taskTextDarkColor: "#ffffff"
+    taskTextOutsideColor: "#ffffff"
+  gantt:
+    barHeight: 46
+    barGap: 12
+    fontSize: 20
+    sectionFontSize: 22
+    topPadding: 70
+    leftPadding: 230
+    gridLineStartPadding: 50
+    useWidth: 1800
+    axisFormat: "%b %Y"
+    tickInterval: 1month
+---
+gantt
+    dateFormat YYYY-MM-DD
+    section Data
+    Collection & licensing   :done, d1, 2026-06-01, 60d
+    Cleaning & dedup         :done, d2, after d1, 35d
+    section Modelling
+    Pre-training             :active, m1, 2026-08-15, 110d
+    Fine-tuning              :m2, after m1, 40d
+    section Evaluation
+    Benchmark suite          :active, e1, 2026-09-15, 80d
+    Red-teaming              :crit, e2, after m2, 30d
+    section Release
+    Paper submission         :milestone, r1, 2027-02-15, 0d
+    Public release           :milestone, r2, 2027-03-20, 0d
+```
+
+::: {.chart-note}
+Grey = done · yellow = in progress · red = critical · vertical line = today
 :::
 
-::::
-
-<div style="margin-top: 80px;"></div>
-
-::: {style="text-align: center; font-size: 1.1em; margin: 0 auto; width: 90%; color: #DDDDDD;"}
-Conclusion and take-away message
+::: {.notes}
+Mermaid diagrams are plain text inside a `{mermaid}` code block; colours come from `style.css`. Statuses: `done`, `active`, `crit`, `milestone`.
 :::
 
-## Cards Example
+## Flowchart
 
-<div style="margin-top: 5%;"></div>
+```{mermaid}
+%%| echo: false
+---
+config:
+  themeVariables:
+    fontSize: 30px
+  flowchart:
+    nodeSpacing: 60
+    rankSpacing: 70
+    padding: 24
+---
+flowchart LR
+    A[(Raw data)] --> B[Clean & dedupe]
+    B --> C[Tokenize]
+    C --> D[Pre-train]
+    D --> E[Fine-tune]
+    E --> F{Eval gate}
+    F -- pass --> G([Deploy])
+    F -- fail --> E
+    G --> H[Monitor]
+    H -. drift .-> A
+    classDef accent stroke-width:3px
+    class D accent
+```
 
-:::: {.columns}
-
-::: {.column width="32%"}
-<div style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #4CAF50; padding: 20px; border-radius: 8px; font-size: 0.85em; box-sizing: border-box; height: 100%;">
-<p style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; margin-top: 0;">
-<strong style="font-size: 1.1em; color: #ffffff;">Card 1</strong> <span style="color: #aaaaaa; font-size: 0.9em;">(This is Card 1)</span>
-</p>
-<p style="margin-bottom: 0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ipsum turpis, euismod nec turpis eu, posuere ullamcorper lacus.</p>
-</div>
+::: {.takeaway}
+Add `class <node> accent` to highlight the step you are talking about.
 :::
 
-::: {.column width="2%"}
+## Network Graph
+
+::: {.grid-1-2}
+
+::: {}
+[Knowledge graph]{.kicker}
+
+[Hover a node to trace its neighbours; drag nodes to rearrange the layout.]{.lead}
+
+::: {.legend .mt-1 style="flex-direction: column; gap: 18px; font-size: 0.65em;"}
+[Model]{style="--c: var(--series-1)"}
+[Data]{style="--c: var(--series-2)"}
+[Orchestration]{style="--c: var(--series-3)"}
+:::
 :::
 
-::: {.column width="32%"}
-<div style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #2196F3; padding: 20px; border-radius: 8px; font-size: 0.85em; box-sizing: border-box; height: 100%;">
-<p style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; margin-top: 0;">
-<strong style="font-size: 1.1em; color: #ffffff;">Card 2</strong> <span style="color: #aaaaaa; font-size: 0.9em;">(This is Card 2)</span>
-</p>
-<p style="margin-bottom: 0;">Curabitur convallis lectus id sapien eleifend, vitae suscipit urna fermentum. Quisque a tortor vitae turpis ullamcorper venenatis. Pellentesque condimentum ornare sem, non elementum quam gravida in. Nulla eget vehicula sem, id lacinia nisi. Suspendisse eu finibus sem, fermentum laoreet nisl. Mauris sed diam porta ante dapibus luctus quis et mi. Sed a lacus elementum, luctus ante pharetra, fermentum libero.</p>
-</div>
+```{=html}
+<div id="chart-network" class="chart tall"></div>
+<script>
+Deck.chart("chart-network", (el) => {
+  const c = Deck.colors, W = el.clientWidth, H = el.clientHeight;
+  const groups = { Model: 0, Data: 1, Orchestration: 2 };
+  const nodes = [
+    ["LLM", "Model"], ["Embedding model", "Model"], ["Reranker", "Model"], ["Guardrails", "Model"], ["Fine-tuning", "Model"],
+    ["Documents", "Data"], ["Chunking", "Data"], ["Vector DB", "Data"], ["Knowledge graph", "Data"], ["Metadata", "Data"], ["Feedback logs", "Data"],
+    ["Agent", "Orchestration"], ["Planner", "Orchestration"], ["Tools", "Orchestration"], ["Memory", "Orchestration"],
+    ["Prompt templates", "Orchestration"], ["Evaluator", "Orchestration"], ["Router", "Orchestration"],
+  ].map(([id, g]) => ({ id, group: groups[g] }));
+  const links = [
+    ["Documents", "Chunking"], ["Chunking", "Embedding model"], ["Embedding model", "Vector DB"], ["Vector DB", "Reranker"],
+    ["Reranker", "LLM"], ["Documents", "Metadata"], ["Metadata", "Vector DB"], ["Documents", "Knowledge graph"],
+    ["Knowledge graph", "Agent"], ["Agent", "Planner"], ["Planner", "Tools"], ["Agent", "Memory"], ["Agent", "LLM"],
+    ["Prompt templates", "LLM"], ["Router", "Agent"], ["Router", "LLM"], ["LLM", "Guardrails"], ["Evaluator", "LLM"],
+    ["Evaluator", "Feedback logs"], ["Feedback logs", "Fine-tuning"], ["Fine-tuning", "LLM"], ["Tools", "Vector DB"],
+    ["Memory", "Vector DB"], ["Planner", "LLM"],
+  ].map(([source, target]) => ({ source, target }));
+
+  const degree = {};
+  links.forEach((l) => { degree[l.source] = (degree[l.source] || 0) + 1; degree[l.target] = (degree[l.target] || 0) + 1; });
+  const radius = (d) => 12 + 4 * degree[d.id];
+
+  const svg = d3.select(el).append("svg").attr("class", "net").attr("viewBox", [0, 0, W, H]).attr("width", W).attr("height", H);
+  const sim = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id((d) => d.id).distance(150))
+    .force("charge", d3.forceManyBody().strength(-1800))
+    .force("collide", d3.forceCollide((d) => radius(d) + 44))
+    .force("x", d3.forceX(W / 2).strength(0.04))
+    .force("y", d3.forceY(H / 2).strength(0.03));
+
+  const link = svg.append("g").selectAll("line").data(links).join("line").attr("stroke-width", 2.5);
+  const node = svg.append("g").selectAll("circle").data(nodes).join("circle")
+    .attr("r", radius).attr("fill", (d) => c.series[d.group]);
+  const label = svg.append("g").selectAll("text").data(nodes).join("text")
+    .text((d) => d.id).attr("text-anchor", "middle");
+
+  node.call(d3.drag()
+    .on("start", (e, d) => { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+    .on("drag", (e, d) => { d.fx = e.x; d.fy = e.y; })
+    .on("end", (e, d) => { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }));
+
+  node.on("pointerenter", (e, d) => {
+    const near = new Set([d.id]);
+    links.forEach((l) => { if (l.source.id === d.id) near.add(l.target.id); if (l.target.id === d.id) near.add(l.source.id); });
+    svg.classed("focus", true);
+    node.classed("lit", (n) => near.has(n.id));
+    label.classed("lit", (n) => near.has(n.id));
+    link.classed("lit", (l) => l.source.id === d.id || l.target.id === d.id);
+  }).on("pointerleave", () => svg.classed("focus", false));
+
+  sim.on("tick", () => {
+    for (const d of nodes) {
+      const r = radius(d) + 4;
+      d.x = Math.max(r + 80, Math.min(W - r - 80, d.x));
+      d.y = Math.max(r + 40, Math.min(H - r - 10, d.y));
+    }
+    link.attr("x1", (l) => l.source.x).attr("y1", (l) => l.source.y).attr("x2", (l) => l.target.x).attr("y2", (l) => l.target.y);
+    node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+    label.attr("x", (d) => d.x).attr("y", (d) => d.y - radius(d) - 12);
+  });
+});
+</script>
+```
+
 :::
 
-::: {.column width="2%"}
+# [04]{.section-num} Scientific plots for ML
+
+[The figures ML papers and talks rely on, interactive: hover for values, drag to zoom, double-click to reset, camera icon for an SVG.]{.section-desc}
+
+## Training Curves
+
+```{=html}
+<div id="chart-training" class="chart"></div>
+<div class="chart-note">Mean ± 1 std over 5 seeds · synthetic data</div>
+<script>
+Deck.chart("chart-training", (el) => {
+  const c = Deck.colors, rng = Deck.rng(7);
+  const steps = Array.from({ length: 121 }, (_, i) => i * 500);
+  const runs = (a, b, k, drift, noise) => Array.from({ length: 5 }, () =>
+    steps.map((t) => a + b * Math.exp(-t / k) + drift * Math.max(0, t - 32000) / 28000 + rng.normal(0, noise) * (1 + 3 * Math.exp(-t / 6000))));
+  const band = (rs) => steps.map((_, i) => {
+    const v = rs.map((r) => r[i]), m = v.reduce((s, x) => s + x, 0) / v.length;
+    return [m, Math.sqrt(v.reduce((s, x) => s + (x - m) ** 2, 0) / v.length)];
+  });
+  const series = [
+    { name: "Train", color: c.series[0], stats: band(runs(1.48, 2.7, 7000, 0, 0.018)) },
+    { name: "Validation", color: c.series[1], stats: band(runs(1.70, 2.5, 7500, 0.14, 0.03)) },
+  ];
+  const traces = series.flatMap((s) => [
+    { x: steps, y: s.stats.map(([m, sd]) => m + sd), mode: "lines", line: { width: 0 }, hoverinfo: "skip", showlegend: false },
+    { x: steps, y: s.stats.map(([m, sd]) => m - sd), mode: "lines", line: { width: 0 }, fill: "tonexty",
+      fillcolor: Deck.alpha(s.color, 0.16), hoverinfo: "skip", showlegend: false },
+    { x: steps, y: s.stats.map(([m]) => m), mode: "lines", name: s.name, line: { color: s.color, width: 3.5 },
+      hovertemplate: "<b>%{y:.3f}</b><extra>" + s.name + "</extra>" },
+  ]);
+  const val = series[1].stats.map(([m]) => m);
+  const best = val.indexOf(Math.min(...val));
+  traces.push({ x: [steps[best]], y: [val[best]], mode: "markers", showlegend: false, hoverinfo: "skip",
+    marker: { size: 18, color: c.accent, line: { color: c.surface, width: 3 } } });
+  Plotly.newPlot(el, traces, Deck.layout({
+    hovermode: "x unified",
+    legend: { traceorder: "normal" },
+    xaxis: { title: { text: "Training step" }, tickformat: "~s", range: [0, 60000] },
+    yaxis: { title: { text: "Cross-entropy loss" }, range: [1.3, 4.6] },
+    annotations: [{ x: steps[best], y: val[best], ax: 0, ay: -90, text: `<b>Best checkpoint</b><br>step ${(steps[best] / 1000).toFixed(1)}k · loss ${val[best].toFixed(3)}`,
+      font: { color: c.ink, size: 22 }, arrowcolor: c.accent, arrowwidth: 2, arrowhead: 0 }],
+  }), Deck.config);
+});
+</script>
+```
+
+## Benchmark Comparison, Step by Step
+
+::: {.grid-2-1}
+
+```{=html}
+<div id="chart-bench" class="chart"></div>
+<script>
+Deck.steps("chart-bench", {
+  init(el) {
+    el.models = [
+      { name: "Baseline 7B", y: [61.2, 48.5, 33.1, 72.4], e: [0.7, 1.5, 1.9, 0.9] },
+      { name: "+ Retrieval", y: [66.0, 51.2, 35.4, 76.9], e: [0.6, 1.3, 2.1, 0.8] },
+      { name: "+ Self-reflection (ours)", y: [69.4, 60.3, 44.8, 80.1], e: [0.5, 1.2, 1.7, 0.7] },
+    ];
+    el.render = (i, animate) => {
+      const c = Deck.colors, bench = ["MMLU", "GSM8K", "HumanEval", "ARC-C"];
+      const traces = el.models.map((m, k) => {
+        const on = k === 0 || i >= k - 1;
+        const dim = i >= 2 && k < 2;
+        return {
+          type: "bar", name: m.name, x: bench, y: on ? m.y : m.y.map(() => 0), showlegend: on,
+          marker: { color: c.series[k], opacity: dim ? 0.3 : 1 },
+          error_y: { type: "data", array: m.e, visible: on, color: dim ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.6)", thickness: 2, width: 8 },
+          hovertemplate: "<b>%{y:.1f}%</b> ± %{error_y.array:.1f}<extra>" + m.name + "</extra>",
+        };
+      });
+      const ours = el.models[2], base = el.models[0];
+      const annotations = i < 2 ? [] : ours.y.map((v, j) => ({
+        // Grouped bars: 3 slots of (1 - bargap) / 3 per category; ours is the right-hand slot
+        x: j + (1 - 0.22) / 3, y: v + ours.e[j] + 1.5, yanchor: "bottom", showarrow: false,
+        text: `<b>+${(v - base.y[j]).toFixed(1)}</b>`, font: { size: 24, color: c.ink },
+      }));
+      const layout = Deck.layout({
+        barmode: "group", bargap: 0.22, bargroupgap: 0.08, barcornerradius: 4, hovermode: "closest",
+        yaxis: { title: { text: "Accuracy (%)" }, range: [0, 100] },
+        xaxis: { tickfont: { size: 24, color: c.body } },
+        annotations,
+        transition: animate ? { duration: 650, easing: "cubic-in-out" } : undefined,
+      });
+      Plotly.react(el, traces, layout, Deck.config);
+    };
+    el.render(-1, false);
+  },
+  step(el, i) { el.render(i, true); },
+});
+</script>
+```
+
+```{=html}
+<ul class="chart-steps">
+  <li><strong>Baseline</strong>7B instruction-tuned model.</li>
+  <li class="fragment"><strong>+ Retrieval</strong>Top-5 passages from the document store.</li>
+  <li class="fragment"><strong>+ Self-reflection (ours)</strong>The model critiques and revises its draft.</li>
+  <li class="fragment"><strong>Gains vs. baseline</strong>Largest on reasoning-heavy GSM8K and HumanEval.</li>
+</ul>
+```
+
 :::
 
-::: {.column width="32%"}
-<div style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #E63946; padding: 20px; border-radius: 8px; font-size: 0.85em; box-sizing: border-box; height: 100%;">
-<p style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; margin-top: 0;">
-<strong style="font-size: 1.1em; color: #ffffff;">Card 3</strong> <span style="color: #aaaaaa; font-size: 0.9em;">(This is Card 3)</span>
-</p>
-<p style="margin-bottom: 0;">Mauris a fermentum purus. Morbi posuere lorem sit amet finibus blandit. Curabitur lacinia et nisi ac tempor. Quisque eu rhoncus nulla. Pellentesque convallis iaculis velit et ornare. Quisque venenatis viverra est. Praesent quis enim gravida, viverra enim condimentum, accumsan lacus.</p>
-</div>
+::: {.notes}
+`Deck.steps()` re-renders the chart whenever a fragment is shown or hidden, so stepping backwards works too.
 :::
 
-::::
+## Distributions: Violin, Box & Points
 
-## Question and Multiple Choice Answer
+```{=html}
+<div id="chart-violin" class="chart"></div>
+<div class="chart-note">Accuracy on each of 57 MMLU subjects · hover a point for the subject · synthetic data</div>
+<script>
+Deck.chart("chart-violin", (el) => {
+  const c = Deck.colors, rng = Deck.rng(3);
+  const subjects = ("abstract algebra,anatomy,astronomy,business ethics,clinical knowledge,college biology,college chemistry,college computer science,college mathematics,college medicine,college physics,computer security,conceptual physics,econometrics,electrical engineering,elementary mathematics,formal logic,global facts,high school biology,high school chemistry,high school computer science,high school european history,high school geography,high school government,high school macroeconomics,high school mathematics,high school microeconomics,high school physics,high school psychology,high school statistics,high school us history,high school world history,human aging,human sexuality,international law,jurisprudence,logical fallacies,machine learning,management,marketing,medical genetics,miscellaneous,moral disputes,moral scenarios,nutrition,philosophy,prehistory,professional accounting,professional law,professional medicine,professional psychology,public relations,security studies,sociology,us foreign policy,virology,world religions").split(",");
+  const difficulty = subjects.map(() => rng.normal(0, 9));
+  const models = [["Baseline 7B", 61, 4], ["+ Retrieval", 66, 3.5], ["+ Self-reflection (ours)", 69.5, 3]];
+  const traces = models.map(([name, mu, noise], k) => ({
+    type: "violin", name, x0: name, text: subjects,
+    y: difficulty.map((d) => Math.max(25, Math.min(97, mu + d * (1 - 0.08 * k) + rng.normal(0, noise)))),
+    line: { color: c.series[k], width: 2.5 }, fillcolor: Deck.alpha(c.series[k], 0.16),
+    box: { visible: true, width: 0.1, fillcolor: "rgba(255,255,255,0.10)", line: { color: "rgba(255,255,255,0.7)", width: 2 } },
+    meanline: { visible: true, color: c.ink, width: 2 },
+    points: "all", jitter: 0.45, pointpos: 0, spanmode: "hard",
+    marker: { size: 9, color: c.series[k], opacity: 0.85, line: { color: c.surface, width: 1.5 } },
+    hoveron: "points", hovertemplate: "%{text}<br><b>%{y:.1f}%</b><extra>" + name + "</extra>",
+  }));
+  Plotly.newPlot(el, traces, Deck.layout({
+    showlegend: false, violingap: 0.25,
+    xaxis: { tickfont: { size: 24, color: c.body }, showline: false },
+    yaxis: { title: { text: "Subject accuracy (%)" }, range: [20, 100] },
+  }), Deck.config);
+});
+</script>
+```
 
-<div style="margin-top: 5%; margin-bottom: 2%; font-size: 1.05em;">
+## Quantiles: Latency ECDF
 
-</div>
+::: {.grid-2-1}
 
-:::: {.columns}
+```{=html}
+<div id="chart-ecdf" class="chart"></div>
+<script>
+Deck.chart("chart-ecdf", (el) => {
+  const c = Deck.colors, rng = Deck.rng(11), n = 4000;
+  const configs = [["FP16", 230, 0.30], ["INT8", 160, 0.33], ["INT4 + speculative", 95, 0.52]];
+  const q = (xs, p) => xs[Math.min(xs.length - 1, Math.floor(p * xs.length))];
+  const rows = [];
+  const traces = configs.map(([name, median, sigma], k) => {
+    const xs = Array.from({ length: n }, () => median * Math.exp(rng.normal(0, sigma))).sort((a, b) => a - b);
+    rows.push([name, k, q(xs, 0.5), q(xs, 0.95), q(xs, 0.99)]);
+    const idx = Array.from({ length: 400 }, (_, i) => Math.floor((i / 399) * (n - 1)));
+    return { x: idx.map((i) => xs[i]), y: idx.map((i) => (i + 1) / n), name, mode: "lines", line: { color: c.series[k], width: 3.5, shape: "hv" },
+      hovertemplate: "p%{customdata:.1f} · <b>%{x:.0f} ms</b><extra>" + name + "</extra>", customdata: idx.map((i) => (100 * (i + 1)) / n) };
+  });
+  const refs = [[0.5, "p50"], [0.95, "p95"], [0.99, "p99"]];
+  Plotly.newPlot(el, traces, Deck.layout({
+    xaxis: { type: "log", title: { text: "Request latency (ms, log scale)" }, tickvals: [30, 50, 100, 200, 500, 1000], range: [Math.log10(25), Math.log10(1400)] },
+    yaxis: { title: { text: "Fraction of requests ≤ x" }, range: [0, 1.02], tickformat: ".0%" },
+    shapes: refs.map(([y]) => ({ type: "line", xref: "paper", x0: 0, x1: 1, y0: y, y1: y, line: { color: c.axis, width: 1 } })),
+    annotations: refs.map(([y, t]) => ({ xref: "paper", x: 0.005, y, text: t, showarrow: false, xanchor: "left", yanchor: t === "p95" ? "top" : "bottom", font: { size: 18, color: c.muted } })),
+  }), Deck.config);
 
-::: {.column width="45%"}
-<div style="box-sizing: border-box; background-color: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 8px; height: 100%;">
-<p style="margin-top: 0; margin-bottom: 20px;"><span style="background-color: #333; color: #ccc; padding: 4px 10px; border-radius: 12px; font-size: 0.7em; font-family: monospace;">Lorem Ipsum</span></p>
+  const table = document.getElementById("ecdf-table");
+  for (const [name, k, p50, p95, p99] of rows) {
+    const tr = table.insertRow();
+    const key = tr.insertCell();
+    const dot = document.createElement("span");
+    dot.style.cssText = `display:inline-block;width:16px;height:16px;border-radius:50%;margin-right:12px;background:${c.series[k]}`;
+    key.append(dot, document.createTextNode(name));
+    for (const v of [p50, p95, p99]) tr.insertCell().textContent = Math.round(v);
+  }
+});
+</script>
+```
 
-<strong style="color: #FF9800; font-family: monospace; font-size: 1em;">Question</strong>
-<h3 style="font-size: 1.2em; color: #ffffff; margin-top: 5px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; line-height: 1.3;">Lorem ipsum dolor sit amet, consectetur adipiscing elit.?</h3>
+::: {}
+[Latency quantiles (ms)]{.kicker}
 
-<strong style="font-size: 1em; color: #2196F3; font-family: monospace;">Context</strong>
-<p style="font-size: 0.85em; color: #dddddd; line-height: 1.5; margin-top: 10px; margin-bottom: 0;">Mauris ipsum turpis, euismod nec turpis eu, posuere ullamcorper lacus. Curabitur convallis lectus id sapien eleifend, vitae suscipit urna fermentum.</p>
-</div>
+::: {.compact-table}
+```{=html}
+<table id="ecdf-table" style="font-variant-numeric: tabular-nums;">
+  <thead><tr><th>Config</th><th>p50</th><th>p95</th><th>p99</th></tr></thead>
+</table>
+```
 :::
 
-::: {.column width="5%"}
+::: {.lead .small .mt-1}
+Quantization moves the whole curve left; speculative decoding has the best median but a longer tail.
+:::
 :::
 
-::: {.column width="50%"}
-<div style="box-sizing: border-box; background-color: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 8px; height: 100%; font-size: 0.85em;">
-
-<strong style="color: #ffffff; font-family: monospace; font-size: 1.1em; display: block; margin-bottom: 15px;">Options</strong>
-
-<div style="border: 1px solid rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 6px; margin-bottom: 10px; background-color: rgba(255,255,255,0.05);"><strong style="color: #aaaaaa; margin-right: 10px; font-family: monospace;">Option A</strong> Curabitur convallis</div>
-<div style="border: 2px solid #4CAF50; padding: 10px 15px; border-radius: 6px; margin-bottom: 10px; background-color: rgba(76, 175, 80, 0.1);"><strong style="color: #4CAF50; margin-right: 10px; font-family: monospace;">Option B (correct)</strong>Praesent quis</div>
-<div style="border: 1px solid rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 6px; margin-bottom: 10px; background-color: rgba(255,255,255,0.05);"><strong style="color: #aaaaaa; margin-right: 10px; font-family: monospace;">Option C</strong> Quisque eu rhoncus nulla</div>
-<div style="border: 1px solid rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 6px; margin-bottom: 25px; background-color: rgba(255,255,255,0.05);"><strong style="color: #aaaaaa; margin-right: 10px; font-family: monospace;">Option D</strong> Quisque a tortor vitae</div>
-
-<div style="border-left: 4px solid #aaaaaa; padding-left: 15px; margin-top: 25px;"><strong style="color: #aaaaaa; font-family: monospace;">Explanation</strong><p style="color: #aaaaaa; margin-top: 5px; margin-bottom: 0;">Praesent quis enim gravida, viverra enim condimentum, accumsan lacus. Suspendisse eu finibus sem, fermentum laoreet nisl.</p></div>
-
-</div>
 :::
 
-::::
+## Confusion Matrix
 
-## Simple Table
+::: {.grid-2-1 style="grid-template-columns: 1.15fr 1fr;"}
 
-<div style="font-size: 0.95em; color: gray; margin-bottom: 5%; margin-top: 5%;">
-This is a description of my awesome table
-</div>
+```{=html}
+<div id="chart-confusion" class="chart tall"></div>
+<script>
+Deck.chart("chart-confusion", (el) => {
+  const c = Deck.colors;
+  const labels = ["plane", "car", "bird", "cat", "deer", "dog"];
+  const counts = [
+    [921, 18, 27, 9, 11, 14], [12, 958, 4, 8, 3, 15], [38, 3, 846, 41, 47, 25],
+    [9, 7, 39, 768, 35, 142], [7, 2, 44, 36, 877, 34], [5, 4, 27, 118, 31, 815],
+  ];
+  const pct = counts.map((row) => row.map((v) => (100 * v) / row.reduce((s, x) => s + x, 0)));
+  const annotations = pct.flatMap((row, i) => row.map((v, j) => ({
+    x: labels[j], y: labels[i], text: v < 1 ? v.toFixed(1) : v.toFixed(0), showarrow: false,
+    font: { size: 22, color: v > 45 ? "#121F2B" : v > 3 ? "#ffffff" : c.muted, weight: i === j ? 700 : 400 },
+  })));
+  Plotly.newPlot(el, [{
+    type: "heatmap", x: labels, y: labels, z: pct, customdata: counts, xgap: 3, ygap: 3, zmin: 0, zmax: 100,
+    colorscale: [[0, "#16283a"], [0.04, "#184f95"], [0.2, "#2a78d6"], [0.6, "#86b6ef"], [1, "#cde2fb"]],
+    colorbar: { thickness: 14, outlinewidth: 0, ticksuffix: "%", tickfont: { size: 18, color: c.muted }, len: 0.9 },
+    hovertemplate: "true <b>%{y}</b> → predicted <b>%{x}</b><br><b>%{z:.1f}%</b> (%{customdata} images)<extra></extra>",
+  }], Deck.layout({
+    annotations,
+    xaxis: { title: { text: "Predicted label" }, showline: false, showgrid: false, tickfont: { size: 22, color: c.body }, constrain: "domain" },
+    yaxis: { title: { text: "True label" }, autorange: "reversed", showline: false, showgrid: false, tickfont: { size: 22, color: c.body }, scaleanchor: "x", constrain: "domain" },
+  }), Deck.config);
+});
+</script>
+```
 
-::: {.spaced-list style="margin-top: 5%;"}
+::: {}
+::: {.card .stat}
+[Top-1 accuracy]{.label}
+[86.4[%]{.unit}]{.value}
+:::
 
-<div style="margin-top: 4%;"></div>
-| Feature | `all-MiniLM-L6-v2` | `all-mpnet-base-v2` |
-| :--- | :--- | :--- |
-| **Base Architecture** | Distilled BERT | MPNet (Masked & Permuted) |
-| **Transformer Layers** | 6 | 12 |
-| **Embedding Dimension** | 384 | 768 |
-| **Parameter Count** | ~22.7 Million | ~109 Million |
-| **Relative Speed** | ~5x Faster | Baseline (1x) |
-| **VRAM Footprint** | Low | High |
+::: {.card .stat .orange .mt-1}
+[cat ↔ dog confusions]{.label}
+[32[% of errors]{.unit}]{.value}
+:::
+
+::: {.lead .small .mt-1}
+Rows are normalised per true class; the diagonal is per-class recall.
+:::
+:::
+
+:::
+
+## ROC & Precision–Recall Curves
+
+```{=html}
+<div id="chart-roc" class="chart"></div>
+<div class="chart-note">Binormal score model, 15% positives · synthetic data</div>
+<script>
+Deck.chart("chart-roc", (el) => {
+  const c = Deck.colors, prev = 0.15;
+  const erf = (x) => { const t = 1 / (1 + 0.3275911 * Math.abs(x)); const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x); return x >= 0 ? y : -y; };
+  const Phi = (z) => 0.5 * (1 + erf(z / Math.SQRT2));
+  const zs = Array.from({ length: 241 }, (_, i) => 4 - i / 30);
+  const models = [["Baseline 7B", 1.5], ["+ Retrieval", 1.95], ["+ Self-reflection (ours)", 2.55]];
+  const traces = [];
+  models.forEach(([name, d], k) => {
+    const fpr = zs.map((z) => 1 - Phi(z)), tpr = zs.map((z) => 1 - Phi(z - d));
+    const prec = fpr.map((f, i) => (tpr[i] * prev) / (tpr[i] * prev + f * (1 - prev) || 1));
+    let auc = 0, ap = 0;
+    for (let i = 1; i < zs.length; i++) { auc += (fpr[i] - fpr[i - 1]) * (tpr[i] + tpr[i - 1]) / 2; ap += (tpr[i] - tpr[i - 1]) * prec[i]; }
+    const line = { color: c.series[k], width: 3.5 };
+    traces.push({ x: fpr, y: tpr, name: `${name} · AUC ${auc.toFixed(2)} · AP ${ap.toFixed(2)}`, legendgroup: name, mode: "lines", line,
+      hovertemplate: "FPR %{x:.2f} · <b>TPR %{y:.2f}</b><extra>" + name + "</extra>" });
+    traces.push({ x: tpr.slice(1), y: prec.slice(1), xaxis: "x2", yaxis: "y2", legendgroup: name, showlegend: false, mode: "lines", line,
+      hovertemplate: "recall %{x:.2f} · <b>precision %{y:.2f}</b><extra>" + name + "</extra>" });
+  });
+  const ref = { color: c.muted, width: 1.5, dash: "dot" };
+  traces.push({ x: [0, 1], y: [0, 1], mode: "lines", line: ref, hoverinfo: "skip", showlegend: false });
+  traces.push({ x: [0, 1], y: [prev, prev], xaxis: "x2", yaxis: "y2", mode: "lines", line: ref, hoverinfo: "skip", showlegend: false });
+  const unit = { range: [0, 1.01], tickvals: [0, 0.25, 0.5, 0.75, 1], constrain: "domain" };
+  Plotly.newPlot(el, traces, Deck.layout({
+    legend: { y: 1.04 },
+    xaxis: { ...unit, domain: [0, 0.45], title: { text: "False positive rate" } },
+    yaxis: { ...unit, title: { text: "True positive rate" }, scaleanchor: "x" },
+    xaxis2: { ...unit, domain: [0.55, 1], title: { text: "Recall" }, anchor: "y2" },
+    yaxis2: { ...unit, title: { text: "Precision" }, anchor: "x2", scaleanchor: "x2" },
+    annotations: [
+      { xref: "x", yref: "y", x: 0.62, y: 0.55, text: "chance", showarrow: false, textangle: -40, font: { size: 18, color: c.muted } },
+      { xref: "x2", yref: "y2", x: 0.98, y: prev, text: "chance", showarrow: false, xanchor: "right", yanchor: "bottom", font: { size: 18, color: c.muted } },
+    ],
+  }), Deck.config);
+});
+</script>
+```
+
+## Embedding Space in 3D
+
+::: {.grid-2-1 style="grid-template-columns: 2.2fr 1fr;"}
+
+```{=html}
+<div id="chart-embed" class="chart tall"></div>
+<script>
+Deck.chart("chart-embed", (el) => {
+  const c = Deck.colors, rng = Deck.rng(5);
+  const clusters = [["Legal", [2.4, -0.4, -0.6]], ["Medical", [-1.6, 2.2, 0.4]], ["Finance", [-1.2, -2.0, 1.6]]];
+  const traces = clusters.map(([name, [cx, cy, cz]], k) => {
+    const n = 260, pts = { x: [], y: [], z: [], text: [] };
+    for (let i = 0; i < n; i++) {
+      pts.x.push(cx + rng.normal(0, 0.55)); pts.y.push(cy + rng.normal(0, 0.55)); pts.z.push(cz + rng.normal(0, 0.55));
+      pts.text.push(`${name.toLowerCase()}-doc-${String(i + 1).padStart(3, "0")}`);
+    }
+    return { type: "scatter3d", mode: "markers", name, ...pts, marker: { size: 5.5, color: c.series[k], opacity: 0.9 },
+      hovertemplate: "<b>%{text}</b><extra>" + name + "</extra>" };
+  });
+  const ax = { showbackground: false, gridcolor: c.grid, zerolinecolor: c.axis, showspikes: false, title: { text: "" },
+    tickfont: { size: 14, color: c.muted }, showticklabels: false };
+  Plotly.newPlot(el, traces, Deck.layout({
+    legend: { y: 0.98, yanchor: "top", itemsizing: "constant" },
+    scene: { xaxis: ax, yaxis: ax, zaxis: ax, aspectmode: "cube", domain: { x: [0, 1], y: [0, 1] }, camera: { eye: { x: 1.2, y: 1.2, z: 0.7 } } },
+  }), Deck.config);
+
+  // Slow turntable rotation until the audience grabs the plot
+  let angle = Math.PI / 4, spinning = true;
+  el.addEventListener("pointerdown", () => (spinning = false));
+  const spin = () => {
+    if (!spinning || !document.body.contains(el)) return;
+    if (el.closest("section.present")) {
+      angle += 0.004;
+      Plotly.relayout(el, { "scene.camera.eye": { x: 1.7 * Math.cos(angle), y: 1.7 * Math.sin(angle), z: 0.7 } });
+    }
+    setTimeout(() => requestAnimationFrame(spin), 40);
+  };
+  spin();
+});
+</script>
+```
+
+::: {}
+[UMAP of document embeddings]{.kicker}
+
+[Drag to rotate, scroll to zoom, hover a point to see the document.]{.lead}
+
+::: {.takeaway .small}
+Three domains separate cleanly: a domain classifier on these embeddings should be easy.
+:::
+:::
+
+:::
+
+## Scaling Laws
+
+```{=html}
+<div id="chart-scaling" class="chart"></div>
+<div class="chart-note">Power-law fits on log–log axes, extrapolated to the next compute budget · synthetic data</div>
+<script>
+Deck.chart("chart-scaling", (el) => {
+  const c = Deck.colors, rng = Deck.rng(21);
+  const budgets = [1e18, 3e18, 1e19, 3e19, 1e20, 3e20, 1e21, 3e21, 1e22];
+  const families = [["Dense", 26, 0.05], ["Mixture-of-experts", 24, 0.052]];
+  const traces = [], annotations = [];
+  families.forEach(([name, A, alpha], k) => {
+    const y = budgets.map((C) => A * Math.pow(C, -alpha) * Math.exp(rng.normal(0, 0.012)));
+    // Least-squares fit of log L = log a - b log C
+    const lx = budgets.map(Math.log10), ly = y.map(Math.log10), n = lx.length;
+    const mx = lx.reduce((s, v) => s + v, 0) / n, my = ly.reduce((s, v) => s + v, 0) / n;
+    const b = lx.reduce((s, v, i) => s + (v - mx) * (ly[i] - my), 0) / lx.reduce((s, v) => s + (v - mx) ** 2, 0);
+    const fit = (C) => Math.pow(10, my + b * (Math.log10(C) - mx));
+    const color = c.series[k];
+    traces.push({ x: budgets, y, name, mode: "markers", marker: { size: 16, color, line: { color: c.surface, width: 2.5 } },
+      hovertemplate: "%{x:.0e} FLOPs · <b>loss %{y:.3f}</b><extra>" + name + "</extra>" });
+    traces.push({ x: [1e18, 1e22], y: [fit(1e18), fit(1e22)], mode: "lines", line: { color, width: 2.5 }, hoverinfo: "skip", showlegend: false });
+    traces.push({ x: [1e22, 1e24], y: [fit(1e22), fit(1e24)], mode: "lines", line: { color, width: 2.5, dash: "dot" }, hoverinfo: "skip", showlegend: false });
+    traces.push({ x: [1e24], y: [fit(1e24)], mode: "markers", showlegend: false, marker: { size: 20, symbol: "star", color: c.accent, line: { color: c.surface, width: 2 } },
+      hovertemplate: "Predicted at 1e24 FLOPs<br><b>loss %{y:.3f}</b><extra>" + name + "</extra>" });
+    annotations.push({ x: 24, y: Math.log10(fit(1e24)), text: `L ∝ C<sup>${b.toFixed(3)}</sup>`, xanchor: "left", xshift: 22, showarrow: false, font: { size: 22, color: c.ink } });
+  });
+  Plotly.newPlot(el, traces, Deck.layout({
+    xaxis: { type: "log", title: { text: "Training compute (FLOPs)" }, exponentformat: "power", dtick: 1, range: [17.8, 24.9] },
+    yaxis: { type: "log", title: { text: "Validation loss" }, tickvals: [1.2, 1.5, 2, 2.5, 3], range: [Math.log10(1.15), Math.log10(3.4)] },
+    annotations: [...annotations, { x: 24, y: Math.log10(1.15), text: "★ = predicted<br>next run", showarrow: false, xanchor: "center", yanchor: "bottom", font: { size: 18, color: c.muted } }],
+  }), Deck.config);
+});
+</script>
+```
+
+## Pareto Front: Accuracy vs. Cost
+
+```{=html}
+<div id="chart-pareto" class="chart"></div>
+<div class="chart-note">Highlighted models are Pareto-optimal: nothing else is both cheaper and better · fictional models</div>
+<script>
+Deck.chart("chart-pareto", (el) => {
+  const c = Deck.colors;
+  const models = [
+    ["Kite-3B", 0.06, 48.1], ["Orca-Mini", 0.1, 51.0], ["Atlas-S", 0.15, 58.3], ["Kite-13B", 0.3, 57.2], ["Ours-7B", 0.35, 66.8],
+    ["Vega-1", 0.6, 62.5], ["Nimbus-7B", 0.8, 64.1], ["Atlas-M", 1.2, 71.9], ["Orca-Pro", 2.5, 70.4], ["Ours-34B", 3.0, 78.6],
+    ["Vega-2", 5, 76.2], ["Nimbus-70B", 8, 79.4], ["Atlas-L", 15, 84.0], ["Lumen-XL", 30, 83.1],
+  ];
+  const sorted = [...models].sort((a, b) => a[1] - b[1]);
+  let best = -Infinity;
+  const front = sorted.filter((m) => (m[2] > best ? ((best = m[2]), true) : false));
+  const isFront = new Set(front.map((m) => m[0]));
+  const others = models.filter((m) => !isFront.has(m[0]));
+  const hover = "<b>%{text}</b><br>$%{x} / 1M tokens · <b>%{y:.1f}%</b><extra></extra>";
+  Plotly.newPlot(el, [
+    { x: front.map((m) => m[1]), y: front.map((m) => m[2]), mode: "lines", line: { color: c.accent, width: 2.5, shape: "hv" }, hoverinfo: "skip", showlegend: false },
+    { x: others.map((m) => m[1]), y: others.map((m) => m[2]), text: others.map((m) => m[0]), mode: "markers", name: "Dominated",
+      marker: { size: 18, color: c.seriesMuted, line: { color: c.surface, width: 2.5 } }, hovertemplate: hover },
+    { x: front.map((m) => m[1]), y: front.map((m) => m[2]), text: front.map((m) => m[0]), mode: "markers+text", name: "Pareto-optimal",
+      textposition: "top left", textfont: { size: 22, color: c.ink },
+      marker: { size: 20, color: c.accent, line: { color: c.surface, width: 2.5 } }, hovertemplate: hover },
+  ], Deck.layout({
+    xaxis: { type: "log", title: { text: "Cost ($ per 1M tokens, log scale)" }, tickvals: [0.05, 0.1, 0.3, 1, 3, 10, 30], ticktext: ["0.05", "0.1", "0.3", "1", "3", "10", "30"], range: [Math.log10(0.04), Math.log10(45)] },
+    yaxis: { title: { text: "Benchmark accuracy (%)" }, range: [44, 90] },
+  }), Deck.config);
+});
+</script>
+```
+
+## Hyperparameter Sweep
+
+```{=html}
+<div id="chart-sweep" class="chart"></div>
+<script>
+Deck.steps("chart-sweep", {
+  init(el) {
+    const c = Deck.colors, rng = Deck.rng(42), n = 90;
+    const runs = Array.from({ length: n }, () => {
+      const lr = -5 + 2.5 * rng.uniform(), bs = [32, 64, 128, 256, 512][Math.floor(rng.uniform() * 5)];
+      const warm = Math.round(rng.uniform() * 2000), drop = 0.3 * rng.uniform(), wd = 0.1 * rng.uniform();
+      const acc = 0.84 - 0.05 * (lr + 3.6) ** 2 - 0.6 * (drop - 0.1) ** 2 - 0.00000002 * (warm - 800) ** 2 + 0.006 * Math.log2(bs / 32) + rng.normal(0, 0.008);
+      return { lr, bs, warm, drop, wd, acc: Math.max(0.55, acc) };
+    });
+    const col = (k) => runs.map((r) => r[k]);
+    const font = (size, color) => ({ size, color, family: c.font, shadow: "none" });
+    el.top = [...col("acc")].sort((a, b) => b - a)[Math.floor(n * 0.1)];
+    el.accRange = [Math.min(...col("acc")), Math.max(...col("acc"))];
+    Plotly.newPlot(el, [{
+      type: "parcoords",
+      line: { color: col("acc"), colorscale: [[0, "#1c3550"], [0.5, "#256abf"], [0.85, "#6da7ec"], [1, "#cde2fb"]], showscale: false },
+      labelfont: font(22, c.ink), tickfont: font(18, c.muted), rangefont: font(16, c.muted),
+      dimensions: [
+        { label: "log₁₀ learning rate", values: col("lr"), range: [-5, -2.5] },
+        { label: "Batch size", values: col("bs").map(Math.log2), tickvals: [5, 6, 7, 8, 9], ticktext: ["32", "64", "128", "256", "512"] },
+        { label: "Warm-up steps", values: col("warm") },
+        { label: "Dropout", values: col("drop"), tickformat: ".2f" },
+        { label: "Weight decay", values: col("wd"), tickformat: ".2f" },
+        { label: "Val. accuracy", values: col("acc"), tickformat: ".0%" },
+      ],
+    }], Deck.layout({ margin: { l: 130, r: 110, t: 100, b: 40 } }), Deck.config);
+  },
+  step(el, i) {
+    Plotly.restyle(el, { "dimensions[5].constraintrange": [i >= 0 ? [el.top, el.accRange[1] + 0.001] : null] });
+  },
+});
+</script>
+```
+
+::: {.chart-note}
+Drag along any axis to filter runs · click an axis' filter bar to clear it · 90 synthetic runs
+:::
+
+::: {.fragment .takeaway style="margin-top: 10px;"}
+The best 10% of runs share a learning rate near 3 × 10⁻⁴ and dropout around 0.1.
+:::
+
+# [05]{.section-num} Presenting
+
+[Speaker view, overview, live annotation and other built-in tools.]{.section-desc}
+
+## Presenter Toolkit
+
+::: {.grid2 .mt-1 style="gap: 26px 60px; font-size: 0.75em;"}
+<div><kbd>S</kbd> &nbsp; Speaker view: notes, timer, next slide</div>
+<div><kbd>O</kbd> &nbsp; Overview of all slides</div>
+<div><kbd>B</kbd> &nbsp; Whiteboard for sketching</div>
+<div><kbd>C</kbd> &nbsp; Draw directly on the slide</div>
+<div><kbd>F</kbd> &nbsp; Fullscreen</div>
+<div><kbd>M</kbd> &nbsp; Slide menu & tools</div>
+<div><kbd>E</kbd> &nbsp; Print / PDF export mode</div>
+<div><kbd>Alt</kbd> + click &nbsp; Zoom into any detail</div>
+:::
+
+::: {.takeaway .mt-2}
+Try it now: press <kbd>C</kbd>, draw on this slide, then press <kbd>C</kbd> again. Drawings stay on their slide.
+:::
+
+::: {.notes}
+Whiteboard and drawing come from the chalkboard plugin, which is turned off in the standalone (single-file) build.
 :::
 
 ## Credits Slide
 
-<div style="margin-top: 5%;"></div>
+::: {.grid2 .mt-1 style="gap: 4%;"}
 
-:::: {.columns}
+::: {.card .people style="border-top-color: var(--accent); padding: 30px; font-size: 1em;"}
+[AI Sweden]{.people-title .hl}
 
-::: {.column width="48%"}
-<div style="box-sizing: border-box; background-color: rgba(255, 255, 255, 0.02); border-top: 4px solid #FECB00; padding: 30px; border-radius: 8px; height: 100%;">
-<h2 style="margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; color: #FECB00; font-size: 1.4em;">AI Sweden</h2>
-<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Elara Vance</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Data Alchemist</span></div>
-<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Julian Thorne</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// MLOps Whisperer</span></div>
-<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Maya Lin</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Tensor Wrangler</span></div>
-<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Silas Sterling</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// LLM Architect</span></div>
-<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Clara Rossi</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Semantic Engineer</span></div>
-<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Henrik Berg</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Neural Navigator</span></div>
-<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Sofia Chen</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Chief Model Orchestrator</span></div>
-<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Marcus Reed</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Initiative Commander</span></div>
-<div style="margin-bottom: 0;"><strong style="color: #ffffff; font-size: 0.85em;">Elena Rostova</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Operations Synthesizer</span></div>
-</div>
+[**Elara Vance** [Data Alchemist]{.role}]{.person style="display: block;"}
+[**Julian Thorne** [MLOps Whisperer]{.role}]{.person style="display: block;"}
+[**Maya Lin** [Tensor Wrangler]{.role}]{.person style="display: block;"}
+[**Silas Sterling** [LLM Architect]{.role}]{.person style="display: block;"}
+[**Clara Rossi** [Semantic Engineer]{.role}]{.person style="display: block;"}
+[**Henrik Berg** [Neural Navigator]{.role}]{.person style="display: block;"}
+[**Sofia Chen** [Chief Model Orchestrator]{.role}]{.person style="display: block;"}
+[**Marcus Reed** [Initiative Commander]{.role}]{.person style="display: block;"}
+[**Elena Rostova** [Operations Synthesizer]{.role}]{.person style="display: block;"}
 :::
 
-::: {.column width="48%"}
-<div style="display: flex; flex-direction: column;">
+::: {}
+::: {.card .people style="border-top-color: var(--blue); padding: 30px; font-size: 1em;"}
+[Project Partner]{.people-title style="color: var(--blue);"}
 
-<div style="box-sizing: border-box; background-color: rgba(255, 255, 255, 0.02); border-top: 4px solid #2196F3; padding: 30px; border-radius: 8px;">
-<h2 style="margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; color: #2196F3; font-size: 1.4em;">Project Partner</h2>
-<div style="margin-bottom: 8px;"><strong style="color: #ffffff; font-size: 0.85em;">Felix Carter</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Compute Pioneer</span></div>
-<div style="margin-bottom: 0;"><strong style="color: #ffffff; font-size: 0.85em;">Kaelen Voss</strong> <span style="color: #aaaaaa; font-size: 0.75em; font-family: monospace; margin-left: 8px;">// Lead Inference Architect</span></div>
-</div>
+[**Felix Carter** [Compute Pioneer]{.role}]{.person style="display: block;"}
+[**Kaelen Voss** [Lead Inference Architect]{.role}]{.person style="display: block;"}
+:::
 
-<div style="margin-top: 150px; text-align: center;">
-<span style="color: #aaaaaa; font-size: 0.8em; display: block; margin-bottom: 15px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px;">Project Co-funded by</span><br>
+::: {.center style="margin-top: 150px;"}
+[Project Co-funded by]{.kicker style="color: #aaaaaa; display: block; margin-bottom: 15px;"}
+
 \<Financeer logo\>
-</div>
-
-</div>
 :::
-::::
+:::
+
+:::

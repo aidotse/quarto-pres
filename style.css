@@ -1,5 +1,57 @@
+/* =========================================================================
+   Design tokens
+   ========================================================================= */
+
+:root {
+  /* Brand */
+  --surface: #121F2B;           /* slide background */
+  --surface-raised: #0b151e;    /* tooltips, code blocks */
+  --accent: #FECB00;            /* AI Sweden yellow: emphasis only */
+  --green: #4CAF50;
+  --blue: #2196F3;
+  --orange: #FF9800;
+  --red: #E63946;
+
+  /* Ink */
+  --ink: #ffffff;               /* headings, values */
+  --body: #cecece;              /* running text */
+  --muted: #9aa5b1;             /* captions, axis labels */
+  --line: rgba(255, 255, 255, 0.10);
+  --panel: rgba(255, 255, 255, 0.04);
+
+  /* Data viz: categorical slots, validated (CVD + contrast) on --surface.
+     Assign in this order, never cycle; scatter-type charts use at most 1-3. */
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
+  --series-6: #008300;
+  --series-7: #9085e9;
+  --series-8: #e66767;
+  --series-muted: #4b5b6b;      /* "everything else" next to an accent highlight */
+  --grid: rgba(255, 255, 255, 0.07);
+  --axis: rgba(255, 255, 255, 0.22);
+
+  /* Mermaid (read by Quarto's mermaid theme CSS) */
+  --mermaid-bg-color: var(--surface);
+  --mermaid-edge-color: var(--muted);
+  --mermaid-fg-color: var(--body);
+  --mermaid-fg-color--lighter: rgba(255, 255, 255, 0.25);
+  --mermaid-fg-color--lightest: rgba(255, 255, 255, 0.04);
+  --mermaid-font-family: "Office Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mermaid-label-bg-color: var(--surface);
+  --mermaid-label-fg-color: var(--ink);
+  --mermaid-node-bg-color: #1b2b3a;
+  --mermaid-node-fg-color: rgba(255, 255, 255, 0.28);
+}
+
+/* =========================================================================
+   Base typography
+   ========================================================================= */
+
 .reveal {
-  color: #cecece;
+  color: var(--body);
   font-size: 42px;
   font-family: "Office Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -9,7 +61,7 @@
 .reveal h4,
 .reveal h5,
 .reveal h6 {
-  color: #cecece;
+  color: var(--body);
   font-family: "Office Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: Bold;
   text-transform: none;
@@ -18,12 +70,12 @@
 
 /* Universal background color, sits underneath backgrounds, etc. */
 body.reveal-viewport {
-    background-color: #121F2B; 
+    background-color: var(--surface);
 }
 
 .reveal h1 { /* Used for the title slide heading */
   font-size: 1.7em;
-  color: #ffffff
+  color: var(--ink);
 }
 .reveal h2 { /* Used for normal slide headings */
   font-size: 1.8em;
@@ -34,8 +86,14 @@ body.reveal-viewport {
 .reveal h4 { /* Could be used for intra-slide headings */
   font-size: 1.5em;
 }
+.reveal a {
+  color: var(--accent);
+}
 .reveal .sourceCode {
   font-size: 22px;
+}
+.reveal pre code {
+  max-height: 100% !important;
 }
 
 /* Hide the small global logo and footer ONLY on the title slide */
@@ -51,10 +109,492 @@ body.reveal-viewport {
     display: none !important;
 }
 
-.reveal .spaced-list li {
-  margin-bottom: 50px !important; 
+/* =========================================================================
+   Section divider slides  (# [01]{.section-num} Title)
+   ========================================================================= */
+
+.reveal .slides section.slide.level1 {
+  text-align: left;
+  padding-left: 60px;
+}
+.reveal .slides section.slide.level1 h1 {
+  font-size: 2.6em;
+  line-height: 1.05;
+  margin: 0;
+  max-width: 1300px;
+}
+.reveal .slides section.slide.level1 h1::before {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 5px;
+  margin-bottom: 50px;
+}
+/* Giant outlined number on the right-hand side */
+.reveal .section-num {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 440px;
+  line-height: 1;
+  font-weight: 800;
+  color: transparent;
+  -webkit-text-stroke: 3px rgba(254, 203, 0, 0.18);
+  letter-spacing: -0.04em;
+  pointer-events: none;
+}
+.reveal .section-desc {
+  display: block;
+  color: var(--muted);
+  font-size: 0.85em;
+  margin-top: 36px;
+  max-width: 950px;
+  line-height: 1.4;
 }
 
-.reveal pre code {
-    max-height: 100% !important;
-  }
+/* =========================================================================
+   Layout helpers
+   ========================================================================= */
+
+.reveal .vcenter {
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.reveal .grid2,
+.reveal .grid3,
+.reveal .grid4 {
+  display: grid;
+  gap: 32px;
+  margin-top: 40px;
+}
+.reveal .grid2 { grid-template-columns: repeat(2, 1fr); }
+.reveal .grid3 { grid-template-columns: repeat(3, 1fr); }
+.reveal .grid4 { grid-template-columns: repeat(4, 1fr); }
+.reveal .grid-2-1 { display: grid; gap: 48px; grid-template-columns: 2fr 1fr; align-items: center; }
+.reveal .grid-1-2 { display: grid; gap: 48px; grid-template-columns: 1fr 2fr; align-items: center; }
+
+.reveal .spaced-list li {
+  margin-bottom: 50px !important;
+}
+.reveal .mt-1 { margin-top: 40px; }
+.reveal .mt-2 { margin-top: 80px; }
+.reveal .center { text-align: center; }
+
+/* =========================================================================
+   Text helpers
+   ========================================================================= */
+
+.reveal .muted { color: var(--muted); }
+.reveal .ink { color: var(--ink); }
+.reveal .hl { color: var(--accent); }
+.reveal .small { font-size: 0.6em; }
+.reveal .xsmall { font-size: 0.5em; }
+
+.reveal .kicker {
+  color: var(--accent);
+  font-family: monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.5em;
+  margin-bottom: 8px;
+}
+.reveal .lead {
+  font-size: 0.75em;
+  color: var(--muted);
+  margin-top: 0;
+  line-height: 1.4;
+}
+.reveal .takeaway {
+  border-left: 6px solid var(--accent);
+  background-color: rgba(254, 203, 0, 0.06);
+  padding: 18px 28px;
+  margin-top: 40px;
+  font-size: 0.66em;
+  line-height: 1.4;
+  border-radius: 0 8px 8px 0;
+}
+.reveal .tag {
+  display: inline-block;
+  background-color: #2a3947;
+  color: #dddddd;
+  border-radius: 14px;
+  padding: 2px 14px;
+  font-family: monospace;
+  font-size: 0.7em;
+  margin-right: 6px;
+}
+.reveal .tag.on {
+  background-color: var(--accent);
+  color: var(--surface);
+  font-weight: bold;
+}
+.reveal kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 4px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom-width: 4px;
+  background: var(--panel);
+  color: var(--ink);
+  font-family: monospace;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+/* =========================================================================
+   Cards
+   ========================================================================= */
+
+.reveal .card {
+  background-color: var(--panel);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 24px 28px;
+  box-sizing: border-box;
+  font-size: 0.7em;
+  line-height: 1.45;
+}
+.reveal .card.green  { border-top-color: var(--green); }
+.reveal .card.blue   { border-top-color: var(--blue); }
+.reveal .card.orange { border-top-color: var(--orange); }
+.reveal .card.red    { border-top-color: var(--red); }
+.reveal .card.plain  { background: none; border: none; border-top: 3px solid var(--accent); border-radius: 0; }
+.reveal .card.plain.green  { border-top-color: var(--green); }
+.reveal .card.plain.orange { border-top-color: var(--orange); }
+
+.reveal .card .card-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: var(--ink);
+  margin: 0 0 14px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.reveal .card .card-title .muted { font-weight: normal; font-size: 0.8em; }
+.reveal .card p { margin: 0 0 10px 0; }
+.reveal .card p:last-child { margin-bottom: 0; }
+.reveal .card ul { margin: 0 0 0 1em; }
+.reveal .card li { margin-bottom: 6px; }
+
+/* =========================================================================
+   Stat tiles  (count-up: <span class="count" data-to="94.2" data-decimals="1">)
+   ========================================================================= */
+
+.reveal .stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.reveal .stat > p > span,
+.reveal .stat > span { display: block; }
+.reveal .stat .label {
+  color: var(--muted);
+  font-size: 0.95em;
+}
+.reveal .stat .spark {
+  height: 70px;
+  margin-top: 22px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.reveal .stat .value {
+  font-size: 3.2em;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.1;
+  margin: 10px 0 6px 0;
+  white-space: nowrap;
+}
+.reveal .stat .value .unit {
+  font-size: 0.45em;
+  color: var(--muted);
+  font-weight: normal;
+  margin-left: 6px;
+}
+.reveal .stat .delta { font-size: 0.9em; font-weight: bold; }
+.reveal .stat .delta.up   { color: var(--green); }
+.reveal .stat .delta.down { color: var(--red); }
+.reveal .stat .delta .muted { font-weight: normal; }
+
+/* =========================================================================
+   Quiz (question + multiple choice)
+   ========================================================================= */
+
+.reveal .quiz-q h3 {
+  font-size: 1.2em;
+  color: var(--ink);
+  margin: 5px 0 20px 0;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 20px;
+  line-height: 1.3;
+}
+.reveal .quiz-label {
+  font-family: monospace;
+  font-weight: bold;
+}
+.reveal .option {
+  border: 1px solid var(--line);
+  padding: 10px 16px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  background-color: var(--panel);
+}
+.reveal .option .quiz-label { color: #aaaaaa; margin-right: 10px; }
+/* The correct option lights up once the (fragment) explanation is revealed */
+.reveal .option { transition: border-color 0.4s, background-color 0.4s; }
+.reveal .quiz:has(.explain.visible) .option.correct {
+  border-color: var(--green);
+  box-shadow: inset 0 0 0 1px var(--green);
+  background-color: rgba(76, 175, 80, 0.1);
+}
+.reveal .quiz:has(.explain.visible) .option.correct .quiz-label { color: var(--green); }
+.reveal .quiz:has(.explain.visible) .option.correct::after { content: " ✓"; color: var(--green); font-weight: bold; }
+.reveal .explain {
+  border-left: 4px solid #aaaaaa;
+  padding-left: 16px;
+  margin-top: 26px;
+  color: #aaaaaa;
+}
+
+/* =========================================================================
+   Tables
+   ========================================================================= */
+
+.reveal .compact-table table {
+  font-size: 0.6em;
+  line-height: 1.3;
+  width: 100%;
+}
+.reveal .compact-table table th {
+  color: var(--ink);
+  border-bottom: 2px solid var(--accent);
+}
+.reveal .compact-table table td,
+.reveal .compact-table table th {
+  padding: 14px 18px;
+  vertical-align: top;
+}
+.reveal .compact-table table tr:nth-child(even) td {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* =========================================================================
+   Logo wall / credits
+   ========================================================================= */
+
+.reveal .logo-wall {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  margin-top: 200px;
+}
+.reveal .logo-wall > p,
+.reveal .legend > p { display: contents; }
+.reveal .logo-wall img { height: 200px; margin: 0; }
+.reveal .logo-wall .break { flex-basis: 100%; height: 0; }
+
+.reveal .people-title {
+  display: block;
+  font-weight: bold;
+  font-size: 1.4em;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+.reveal .person { margin-bottom: 8px; font-size: 0.85em; }
+.reveal .person strong { color: var(--ink); }
+.reveal .person .role {
+  color: #aaaaaa;
+  font-size: 0.88em;
+  font-family: monospace;
+  margin-left: 8px;
+}
+.reveal .person .role::before { content: "// "; }
+
+/* =========================================================================
+   Charts (Plotly / D3 containers)
+   ========================================================================= */
+
+.reveal .chart {
+  width: 100%;
+  height: 720px;
+  margin-top: 20px;
+}
+.reveal .chart.short { height: 600px; }
+.reveal .chart.tall  { height: 800px; }
+.reveal .chart-note {
+  color: var(--muted);
+  font-size: 0.45em;
+  text-align: right;
+  margin-top: 6px;
+}
+/* Plotly mode bar: quiet until hovered */
+.reveal .js-plotly-plot .modebar { background: transparent !important; }
+.reveal .js-plotly-plot .modebar-btn path { fill: var(--muted) !important; }
+.reveal .js-plotly-plot .modebar-btn:hover path,
+.reveal .js-plotly-plot .modebar-btn.active path { fill: var(--accent) !important; }
+.reveal .js-plotly-plot .modebar-btn svg { width: 22px; height: 22px; }
+.reveal .js-plotly-plot .parcoords line.highlight { stroke: var(--accent) !important; stroke-opacity: 0.9 !important; }
+
+/* Step labels that drive a fragment-synced chart */
+.reveal .chart-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.62em;
+}
+.reveal .chart-steps li {
+  padding: 16px 22px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  line-height: 1.35;
+}
+.reveal .chart-steps li strong { color: var(--ink); display: block; margin-bottom: 4px; }
+.reveal .chart-steps li.current-fragment {
+  border-color: var(--accent);
+  background: rgba(254, 203, 0, 0.06);
+}
+
+/* D3 network graph */
+.reveal .net text {
+  fill: var(--body);
+  font-size: 22px;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 6px;
+}
+.reveal .net circle { cursor: grab; stroke: var(--surface); stroke-width: 3px; transition: opacity 0.2s; }
+.reveal .net line { stroke: rgba(255, 255, 255, 0.18); transition: opacity 0.2s, stroke 0.2s; }
+.reveal .net.focus circle:not(.lit),
+.reveal .net.focus text:not(.lit) { opacity: 0.18; }
+.reveal .net.focus line:not(.lit) { opacity: 0.08; }
+.reveal .net line.lit { stroke: var(--accent); }
+
+/* Legend chips used beside D3 / HTML charts */
+.reveal .legend { display: flex; gap: 30px; flex-wrap: wrap; font-size: 0.55em; color: var(--body); }
+.reveal .legend span::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-right: 10px;
+  vertical-align: -2px;
+  background: var(--c);
+}
+
+/* =========================================================================
+   Mermaid diagrams (colours come from the --mermaid-* tokens above)
+   ========================================================================= */
+
+.reveal .cell-output-display:has(svg.mermaid-js),
+.reveal div:has(> pre.mermaid-js) { margin-top: 30px; }
+.reveal svg.mermaid-js { width: 100% !important; max-width: 100% !important; height: auto; }
+.reveal svg.mermaid-js .flowchart-link { stroke-width: 2.5px !important; }
+.reveal svg.mermaid-js .labelBkg,
+.reveal svg.mermaid-js span.edgeLabel,
+.reveal svg.mermaid-js .edgeLabel p {
+  background-color: var(--surface) !important;
+  color: var(--muted) !important;
+  font-style: italic;
+}
+.reveal svg.mermaid-js .node.accent rect,
+.reveal svg.mermaid-js .node.accent polygon { stroke: var(--accent) !important; stroke-width: 3px !important; fill: rgba(254, 203, 0, 0.10) !important; }
+
+/* Gantt */
+.reveal svg.mermaid-js .grid .tick line { stroke: var(--grid) !important; }
+.reveal svg.mermaid-js .grid .tick text { fill: var(--muted) !important; stroke: none !important; font-size: 18px !important; }
+.reveal svg.mermaid-js .grid path { fill: none !important; stroke: none !important; }
+.reveal svg.mermaid-js .section0,
+.reveal svg.mermaid-js .section2 { fill: rgba(255, 255, 255, 0.03) !important; }
+.reveal svg.mermaid-js .section1,
+.reveal svg.mermaid-js .section3 { fill: transparent !important; }
+.reveal svg.mermaid-js .sectionTitle { fill: var(--ink) !important; font-size: 22px !important; font-weight: bold; }
+.reveal svg.mermaid-js .task { fill: rgba(57, 135, 229, 0.30) !important; stroke: var(--series-1) !important; stroke-width: 2px !important; }
+.reveal svg.mermaid-js .done0, .reveal svg.mermaid-js .done1,
+.reveal svg.mermaid-js .done2, .reveal svg.mermaid-js .done3 { fill: rgba(255, 255, 255, 0.10) !important; stroke: rgba(255, 255, 255, 0.25) !important; }
+.reveal svg.mermaid-js .active0, .reveal svg.mermaid-js .active1,
+.reveal svg.mermaid-js .active2, .reveal svg.mermaid-js .active3 { fill: rgba(254, 203, 0, 0.22) !important; stroke: var(--accent) !important; }
+.reveal svg.mermaid-js .crit0, .reveal svg.mermaid-js .crit1,
+.reveal svg.mermaid-js .crit2, .reveal svg.mermaid-js .crit3 { fill: rgba(230, 57, 70, 0.25) !important; stroke: var(--red) !important; }
+.reveal svg.mermaid-js .milestone { fill: var(--accent) !important; stroke: var(--surface) !important; }
+.reveal svg.mermaid-js .taskText,
+.reveal svg.mermaid-js .taskTextOutsideRight,
+.reveal svg.mermaid-js .taskTextOutsideLeft { fill: var(--ink) !important; font-size: 20px !important; }
+.reveal svg.mermaid-js .today { stroke: var(--accent) !important; stroke-width: 3px !important; }
+
+/* =========================================================================
+   Before / after image comparison slider
+   ========================================================================= */
+
+.reveal img-comparison-slider {
+  --divider-width: 4px;
+  --divider-color: var(--accent);
+  --default-handle-color: var(--accent);
+  --default-handle-width: 80px;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  outline: none;
+}
+.reveal img-comparison-slider img { margin: 0; max-height: none; width: 100%; display: block; }
+.reveal .compare-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: monospace;
+  font-size: 0.5em;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 16px;
+}
+
+/* =========================================================================
+   Math (MathML rendered at build time; bundled font keeps it offline)
+   ========================================================================= */
+
+@font-face {
+  font-family: "STIX Two Math";
+  src: url("assets/vendor/fonts/stix-two-math.woff2") format("woff2");
+  font-display: block;
+}
+.reveal math {
+  font-family: "STIX Two Math", math;
+  color: var(--ink);
+}
+.reveal math[display="block"] { font-size: 1.5em; margin: 30px 0; }
+
+/* =========================================================================
+   Tabsets
+   ========================================================================= */
+
+.reveal .panel-tabset {
+  margin-top: 30px;
+}
+.reveal .panel-tabset [role="tablist"] {
+  border-bottom: 1px solid var(--line);
+}
+.reveal .panel-tabset [role="tab"] {
+  color: var(--muted);
+  font-size: 0.6em;
+  padding: 12px 24px;
+  border-bottom: 3px solid transparent;
+}
+.reveal .panel-tabset [role="tab"][aria-selected="true"] {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+.reveal .panel-tabset .tab-content { font-size: 0.8em; padding-top: 24px; }
+.reveal .panel-tabset .sourceCode { font-size: 32px; }
+.reveal .panel-tabset pre code { padding: 20px 26px; line-height: 1.5; }
