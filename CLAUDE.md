@@ -29,33 +29,17 @@ node tools/shot.mjs --list                        # slide numbers, ids, titles (
 
 ## Architecture
 
-- `index.qmd`: all slides. Front matter holds the Reveal.js config: a nominal **1920×1080** canvas, `html-math-method: mathml`, `bibliography: references.bib`, and `include-in-header` script tags for the vendored libraries, `responsive.js` and `deck.js` (in that order). `# [NN]{.section-num} Title {#id}` headings are section dividers; they also group slides into vertical stacks, but navigation stays linear.
-- `_quarto.yml` / `_quarto-standalone.yml`: the folder is a Quarto project only so the `standalone` profile can override options. Document front matter beats profiles, so any option the profile must change must live in `_quarto.yml`, not `index.qmd`. Currently that is `chalkboard`, which is incompatible with `embed-resources`.
-- `style.css`: design tokens in `:root`, then one block per component. Notable tokens:
-  - `--series-1..8`: the chart palette, validated for colour-blind safety on `--surface`. Assign series in that fixed order. The accent yellow is for emphasis only, never a regular series colour.
-  - `--mermaid-*`: read by Quarto's Mermaid theme.
+Each JS/CSS file documents itself in its header comment; read that before changing it.
 
-  Prefer the shared classes over inline styles. The last section ("Responsive layout") holds the flex-column rules and every `body.portrait` override.
-- `assets/js/deck.js`: the shared chart theme (`Deck.layout()`, `Deck.config`, `Deck.colors` read from the CSS vars, seeded `Deck.rng()`), plus the slide lifecycle:
-  - Charts register with `Deck.chart(id, init)` or `Deck.steps(id, {init, step})` in an inline `<script>` next to their container. They are drawn only when their slide is first shown, because hidden slides have zero size. `step(el, i)` is called again on every fragment change, with the highest visible fragment index (−1 = none).
-  - `Deck.resize()` redraws visible charts and marks hidden ones stale.
-  - It also handles:
-    - `.count` count-up numbers
-    - `.spark` sparklines
-    - `.typewriter` fragments: typed out on reveal; nested fragments are skipped
-    - `Deck.tokens(el, [[token, score], ...])` for token attribution
-    - `.qr` codes: the deck URL when served over http, else `data-fallback`
-    - a pointer fix for `img-comparison-slider` under Reveal's CSS scaling
-- `assets/js/responsive.js`: resizes Reveal's logical canvas to fit the window (the behaviour is described in the README) and adds `body.portrait`.
-  - It exposes `--slide-w` / `--slide-h`; chart heights are `calc()`s of these.
-  - It disables Reveal's automatic mobile scroll view with `scrollActivationWidth: 0`; `null` would not deactivate it.
-  - It calls `Deck.resize()`.
-
-  Slides are flex columns whose blocks get `margin-top: auto`, so spare height is shared evenly. Captions that must stick to the block above (`.lead`, `.chart-note`, ...) are excluded in `style.css`. Inline pixel values are relative to the current canvas, so prefer layout classes and `var(--slide-h)`-based sizes. Print/PDF mode (`?print-pdf`) skips all of this.
-- `references.bib`: cited as `[@key]`, resolved by Pandoc at build time, and listed on the `## References` slide (`::: {#refs}`). Quarto makes that slide `.smaller`, so `#refs` sizes are relative to 0.7em.
-- `assets/vendor/`: Plotly, D3, img-comparison-slider, qrcode-generator and the STIX Two Math font are vendored (no CDNs), so both builds work offline. Mermaid comes bundled with Quarto.
-- `tools/`: dev-only helpers with their own `package.json`. Not deployed.
-- **`hide-ui` state**: `data-state="hide-ui"` on a slide hides the global logo and footer.
+- `index.qmd`: all slides; the Reveal.js config is in the front matter. Header scripts load in this order: vendored libraries, `responsive.js`, `deck.js`. Section dividers are `# [NN]{.section-num} Title {#id}`.
+- `_quarto.yml` / `_quarto-standalone.yml`: document front matter beats profiles, so any option the `standalone` profile changes must live in `_quarto.yml` (currently `chalkboard`, which can't be embedded).
+- `style.css`: tokens in `:root`, then one commented block per component. All portrait overrides are in the last block, "Responsive layout". Use `--series-1..8` in fixed order; the accent yellow is for emphasis only. Prefer shared classes and `var(--slide-h)` sizes to inline pixels, which don't reflow.
+- `assets/js/deck.js`: chart theme and helpers. Charts register with `Deck.chart` / `Deck.steps` and are drawn when their slide is first shown.
+- `assets/js/responsive.js`: fits the canvas to the window and sets `body.portrait`, `--slide-w` and `--slide-h`. Off in `?print-pdf`. Keep `scrollActivationWidth: 0`: `null` doesn't disable Reveal's mobile scroll view.
+- `references.bib`: cited as `[@key]`. Quarto makes the References slide `.smaller`, so `#refs` sizes are relative to 0.7em.
+- `assets/vendor/`: Plotly, D3, img-comparison-slider, qrcode-generator and the STIX Two Math font, so both builds work offline. Mermaid ships with Quarto.
+- `tools/`: dev-only helpers with their own `package.json`; not deployed.
+- `data-state="hide-ui"` on a slide hides the global logo and footer.
 
 ## Gotchas
 
