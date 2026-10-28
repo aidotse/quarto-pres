@@ -62,7 +62,7 @@ node tools/shot.mjs results-table 14 --size 1920x1080,820x1180   # slide ids or 
 node tools/shot.mjs --offline                                     # every slide, network blocked
 ```
 
-The script exits non-zero on page JavaScript errors. By default every fragment is shown (`--frags none` for the initial state); slides with typewriter text or long animations may need a longer `--wait`. Check `--offline` against the standalone build too; only the YouTube and Datawrapper iframes should be blocked. For interactions (hover, drag, sliders), write a throwaway Playwright script in the same style.
+The script exits non-zero on page JavaScript errors and on missing files (it names the file). By default every fragment is shown (`--frags none` for the initial state); slides with typewriter text or long animations may need a longer `--wait`. Check `--offline` against the standalone build too; only the YouTube and Datawrapper iframes should be blocked. For interactions (hover, drag, sliders), write a throwaway Playwright script in the same style.
 
 ## Deployment
 
@@ -70,4 +70,8 @@ Two parallel CI configs do the same thing and must be kept in sync:
 - `.github/workflows/quarto-pages.yml` (GitHub Pages)
 - `.gitlab-ci.yml` (GitLab Pages)
 
-Both pin the Quarto version (`QUARTO_VERSION`, currently 1.9.38, also stated in the README's Prerequisites); bump all three together and re-check the deck. On PRs/MRs they only run `quarto render index.qmd`. On `main` they render and then copy **only** `index.html`, `index_files/`, `assets/`, and `style.css` into `public/`. Any new local resource referenced by the deck must live under `assets/`, or else be added to both CI configs and `export.sh`; otherwise it will be missing from the deployed or exported presentation.
+Both pin the Quarto version (`QUARTO_VERSION`, currently 1.9.38, also stated in the README's Prerequisites); bump all three together and re-check the deck. Dependabot (`.github/dependabot.yml`) bumps the actions and `tools/` monthly, but not Quarto.
+
+- On every PR/MR, into any branch, `test-build` renders the lean and standalone builds, assembles `public/` like the deploy, and runs `tools/shot.mjs --offline` on both. That catches JS errors and files missing from the deployed set. On GitHub, the rendered decks and screenshots are uploaded as the `deck-preview` artifact.
+- `test-build` is the required status check on `main`, and admins can't bypass it. Keep the job name, and don't add path filters that skip it, or PRs into `main` will wait forever for a check that never reports.
+- On `main` (push or manual run) the CI renders, then copies **only** `index.html`, `index_files/`, `assets/` and `style.css` into `public/` and deploys. Any new local resource referenced by the deck must live under `assets/`, or else be added to both CI configs and `export.sh`.

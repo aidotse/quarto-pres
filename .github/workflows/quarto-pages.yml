@@ -1,68 +1,118 @@
 name: Quarto CI/CD
 
-# Trigger the workflow on pushes and PRs to the main branch
+# - Every PR (into any branch, so stacked PRs are checked too) runs test-build,
+#   the required status check on main. Don't rename the job or skip it for
+#   some PRs: a required check that never reports blocks the merge.
+# - Pushes to main, and manual runs on main, deploy to GitHub Pages.
+# Keep in sync with .gitlab-ci.yml.
 on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
-# Required permissions for deploying to GitHub Pages securely via OIDC
+# Least privilege by default; the deploy job adds what Pages needs.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # Quarto version used to build the deck; keep in sync with .gitlab-ci.yml
 env:
   QUARTO_VERSION: "1.9.38"
 
-# Ensure only one deployment runs at a time
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  # --- JOB 1: Test the build on Pull Requests ---
+  # --- JOB 1: Build and smoke-test every PR ---
   test-build:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # A new push to the PR cancels the run for the previous one
+    concurrency:
+      group: test-build-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: ${{ env.QUARTO_VERSION }}
-          
-      - name: Test Quarto Build
+
+      - name: Render Standalone (Offline) Build
         run: |
-          echo "Testing Quarto build..."
+          quarto render index.qmd --profile standalone
+          mkdir -p standalone
+          mv index.html standalone/
+
+      - name: Render Lean Build and Assemble public/ as the Deploy Does
+        run: |
           quarto render index.qmd
-          echo "✅ Build successful! Safe to merge."
+          mkdir -p public
+          cp -r index.html index_files/ assets/ style.css public/
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tools/package-lock.json
+
+      - name: Install Playwright
+        working-directory: tools
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      # Visits every slide with the network blocked: fails on JavaScript
+      # errors and on files missing from the deployed set (404s).
+      - name: Smoke-Test Deployed Deck (Landscape + Portrait)
+        run: node tools/shot.mjs --html public/index.html --offline --frags none --wait 300 --size 1920x1080,820x1180 --out shots/lean
+
+      - name: Smoke-Test Standalone Deck
+        if: ${{ !cancelled() }}
+        run: node tools/shot.mjs --html standalone/index.html --offline --frags none --wait 300 --out shots/standalone
+
+      - name: Upload Rendered Deck and Screenshots
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: deck-preview
+          path: |
+            public/
+            standalone/
+            shots/
+          retention-days: 14
 
   # --- JOB 2: Deploy to Pages from the main branch ---
   deploy-pages:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    # One deployment at a time; never cancel one that is in progress
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: ${{ env.QUARTO_VERSION }}
-          
+
       - name: Render Production Presentation
         run: |
           echo "Rendering production presentation..."
           quarto render index.qmd
-        
+
       - name: Prepare Public Directory
         run: |
           mkdir -p public
@@ -71,15 +121,15 @@ jobs:
           mv assets/ public/
           mv style.css public/
           echo "✅ Deployment package ready!"
-          
+
       - name: Setup GitHub Pages
-        uses: actions/configure-pages@v4
-        
+        uses: actions/configure-pages@v6
+
       - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: './public'
-          
+
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
