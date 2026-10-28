@@ -411,7 +411,13 @@ docker run -it --rm \
 Full slide image
 :::
 
-## Embedded Image {background-image="assets/logowall.png" background-size="60%"}
+## Embedded Image {style="--frame: #fffdf9"}
+
+![Partners and members of the AI Sweden network.](assets/logowall.png){.framed fig-alt="Wall of about 200 partner logos on a white background"}
+
+::: {.notes}
+`.framed` puts the image on a white card with rounded corners and a soft shadow, so figures with a white background (plots, diagrams, logos) don't end in hard edges against the dark slide. Its height is capped relative to the canvas, so it also fits in portrait. The caption is optional: `![Caption](path){.framed}`; leave the brackets empty for none. The frame is white by default; this image has a slightly warm background, so `style="--frame: #fffdf9"` on the slide heading matches it to avoid a visible seam.
+:::
 
 ## {background-iframe="https://www.youtube.com/embed/Vpu3vou0cRE?autoplay=1&controls=0&rel=0" background-interactive="true"}
 

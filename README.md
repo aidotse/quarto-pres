@@ -6,7 +6,7 @@ Pristine presentations with [Quarto](https://quarto.org/) and [Reveal.js](https:
 
 To render or edit this presentation, you will need to install Quarto on your local machine.
 
-1. **Download Quarto:** Go to the [Quarto Downloads page](https://quarto.org/docs/get-started/) and install the version for your operating system.
+1. **Download Quarto:** Go to the [Quarto Downloads page](https://quarto.org/docs/get-started/) and install the version for your operating system. CI builds with Quarto *1.9.38* (pinned in both CI configs), so use that version locally if a newer one renders differently.
 2. **Verify Installation:** Open your terminal and run:
    ```bash
    quarto check
@@ -79,7 +79,7 @@ When designing a slide, use the layout classes (`.grid2`, `.grid-2-1`, `.columns
 The deck doubles as a catalogue of elements to copy from, grouped into sections you can jump to from the agenda:
 
 * *Text, layout & code:* cards, callouts, stat tiles with count-up numbers, step-by-step equations, tabsets, a quiz, a paper-style results table (best/second-best marking), code highlighting, citations and footnotes.
-* *Images & media:* full-bleed images, YouTube and web embeds, a local (offline) video, a before/after image slider, a logo wall.
+* *Images & media:* full-bleed images, framed figures with rounded corners, YouTube and web embeds, a local (offline) video, a before/after image slider, a logo wall.
 * *Diagrams & planning:* Mermaid Gantt charts and flowcharts, a draggable D3 network.
 * *Scientific plots for ML:* training curves, error bars, violins, quantiles, confusion matrix, ROC/PR, 3D embeddings, scaling laws, Pareto fronts, parallel coordinates.
 * *Showing model outputs:* an LLM conversation that types itself out, token-level attribution, a qualitative results grid.

@@ -561,6 +561,36 @@ body.reveal-viewport {
 }
 
 /* =========================================================================
+   Framed figure  (![Optional caption](figure.png){.framed})
+   A white rounded card for figures with a light background (plots, diagrams,
+   logos), so they don't end in hard edges on the dark slide. Sized by the
+   canvas, overriding the inline size Reveal's auto-stretch would set.
+   Match an off-white figure by setting --frame on the slide:
+   ## Title {style="--frame: #fffdf9"}  (Quarto drops style on the image itself).
+   ========================================================================= */
+
+.reveal img.framed {
+  display: block;
+  box-sizing: content-box;
+  width: auto !important;
+  height: auto !important;
+  max-width: calc(100% - 48px);
+  max-height: calc(var(--slide-h, 1080px) * 0.6);
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--frame, #ffffff);
+  border-radius: 18px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+}
+.reveal .slide img.framed + p.caption,
+.reveal .slide figure:has(> img.framed) > figcaption {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 0.6em;
+  color: var(--muted);
+}
+
+/* =========================================================================
    Before / after image comparison slider
    ========================================================================= */
 
@@ -1027,7 +1057,7 @@ body.reveal-viewport {
   flex: none;
 }
 /* Captions and leads stay attached to the block they describe */
-.reveal .slides section.slide.level2:not(.center) > :not(h2):not(.lead):not(.chart-note):not(.compare-labels) {
+.reveal .slides section.slide.level2:not(.center) > :not(h2):not(.lead):not(.chart-note):not(.compare-labels):not(.caption) {
   margin-top: auto;
 }
 .reveal .slides section.slide.level2:not(.center)::after {

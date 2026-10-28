@@ -1,5 +1,9 @@
 image: ubuntu:22.04
 
+# Quarto version used to build the deck; keep in sync with .github/workflows/quarto-pages.yml
+variables:
+  QUARTO_VERSION: "1.9.38"
+
 # Define our stages
 stages:
   - test
@@ -8,11 +12,10 @@ stages:
 .setup_quarto: &setup_quarto
   before_script:
     - apt-get update && apt-get install -y curl wget
-    - echo "Downloading latest Quarto CLI..."
-    - LATEST_URL=$(curl -s https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest | grep "browser_download_url.*linux-amd64.deb" | cut -d '"' -f 4)
-    - wget $LATEST_URL -O quarto-latest.deb
+    - echo "Downloading Quarto CLI $QUARTO_VERSION..."
+    - wget "https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.deb" -O quarto.deb
     - echo "Installing Quarto..."
-    - apt-get install ./quarto-latest.deb -y
+    - apt-get install ./quarto.deb -y
 
 # --- JOB 1: Test the build on Merge Requests ---
 test-build:
