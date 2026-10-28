@@ -1,0 +1,9 @@
+{
+  "name": "quarto-pres-tools",
+  "private": true,
+  "description": "Dev-only helpers for checking the rendered deck; not part of the presentation.",
+  "type": "module",
+  "devDependencies": {
+    "playwright": "^1.64.0"
+  }
+}

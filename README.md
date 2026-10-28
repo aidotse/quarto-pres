@@ -58,10 +58,11 @@ The `standalone` profile (`_quarto-standalone.yml`) turns on `embed-resources` a
 * `assets/`: All images, logos, and background graphics used in the deck.
   * `assets/js/deck.js`: Shared chart theme plus helpers that draw charts when their slide is first shown and step them with fragments.
   * `assets/js/responsive.js`: Fits the slide canvas to the screen (see below).
-  * `assets/vendor/`: Locally bundled libraries ([Plotly](https://plotly.com/javascript/), [D3](https://d3js.org/), [img-comparison-slider](https://github.com/sneas/img-comparison-slider)) and the STIX Two Math font, so the deck never depends on a CDN.
+  * `assets/vendor/`: Locally bundled libraries ([Plotly](https://plotly.com/javascript/), [D3](https://d3js.org/), [img-comparison-slider](https://github.com/sneas/img-comparison-slider), [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator)) and the STIX Two Math font, so the deck never depends on a CDN.
 * `references.bib`: BibTeX entries cited with `[@key]`; the bibliography is rendered at build time onto the References slide.
 * `_quarto.yml` / `_quarto-standalone.yml`: Project defaults and the offline single-file profile.
 * `export.sh`: Quick script for exporting all required assets into an `output.zip`.
+* `tools/shot.mjs`: Dev-only screenshot helper for checking the rendered slides at any screen size (`node tools/shot.mjs --help`; needs `npm install` in `tools/`).
 
 ## 📐 Responsive Layout
 
