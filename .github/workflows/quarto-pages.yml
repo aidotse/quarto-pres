@@ -64,9 +64,10 @@ jobs:
           npx playwright install --with-deps chromium
 
       # Visits every slide with the network blocked: fails on JavaScript
-      # errors and on files missing from the deployed set (404s).
+      # errors and on files missing from the deployed set (404s). --fresh also
+      # opens the deck directly on a chart slide, which exercises startup code.
       - name: Smoke-Test Deployed Deck (Landscape + Portrait)
-        run: node tools/shot.mjs --html public/index.html --offline --frags none --wait 300 --size 1920x1080,820x1180 --out shots/lean
+        run: node tools/shot.mjs --html public/index.html --offline --frags none --wait 300 --size 1920x1080,820x1180 --fresh training-curves --out shots/lean
 
       - name: Smoke-Test Standalone Deck
         if: ${{ !cancelled() }}
