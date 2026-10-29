@@ -37,8 +37,8 @@ Each JS/CSS file documents itself in its header comment; read that before changi
 - `assets/js/deck.js`: chart theme and helpers. Charts register with `Deck.chart` / `Deck.steps` and are drawn when their slide is first shown.
 - `assets/js/responsive.js`: fits the canvas to the window and sets `body.portrait`, `--slide-w` and `--slide-h`. Off in `?print-pdf`. Keep `scrollActivationWidth: 0`: `null` doesn't disable Reveal's mobile scroll view.
 - `references.bib`: cited as `[@key]`. Quarto makes the References slide `.smaller`, so `#refs` sizes are relative to 0.7em.
-- `assets/vendor/`: Plotly, D3, img-comparison-slider, qrcode-generator and the STIX Two Math font, so both builds work offline. Mermaid ships with Quarto.
-- `tools/`: dev-only helpers with their own `package.json`; not deployed.
+- `assets/vendor/`: Plotly, D3, img-comparison-slider, qrcode-generator, Apache ECharts and the STIX Two Math font, so both builds work offline. Mermaid ships with Quarto. ECharts charts use `Deck.echarts(el, option)` (theme + SVG renderer) instead of `Deck.layout()`.
+- `tools/`: dev-only helpers with their own `package.json`; not deployed. `compare_charts.py` (`tools/requirements.txt`) regenerates `assets/compare/`; change the data or Python styling there, never the generated files.
 - `data-state="hide-ui"` on a slide hides the global logo and footer.
 
 ## Gotchas

@@ -452,6 +452,35 @@ body.reveal-viewport {
 .reveal .js-plotly-plot .modebar-btn svg { width: 22px; height: 22px; }
 .reveal .js-plotly-plot .parcoords line.highlight { stroke: var(--accent) !important; stroke-opacity: 0.9 !important; }
 
+/* Library comparison: 2x2 panels of the same chart in different libraries
+   (::: {.lib-compare} > ::: {.lib-col} with [Name]{.lib-name} [meta]{.lib-meta},
+   then a .lib-chart container or an ![](figure.svg){.lib-static} image) */
+.reveal .lib-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 64px;
+}
+.reveal .lib-col { min-width: 0; }
+.reveal .lib-col > p { margin: 0 0 6px; line-height: 1.2; }
+.reveal .lib-name {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 0.55em;
+  margin-right: 10px;
+}
+.reveal .lib-meta {
+  color: var(--muted);
+  font-size: 0.42em;
+}
+.reveal .lib-chart,
+.reveal img.lib-static {
+  display: block;
+  width: 100%;
+  height: calc(var(--slide-h) * 0.29);
+  margin: 0;
+}
+.reveal img.lib-static { object-fit: contain; }
+
 /* Step labels that drive a fragment-synced chart */
 .reveal .chart-steps {
   list-style: none;
@@ -1066,6 +1095,8 @@ body.reveal-viewport {
 }
 
 /* Portrait: one column, smaller decorations */
+.portrait .reveal .lib-meta { display: block; margin-top: 4px; }
+.portrait .reveal .lib-col > p { line-height: 1.1; }
 .portrait .reveal .grid2,
 .portrait .reveal .grid3,
 .portrait .reveal .grid-2-1,
