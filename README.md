@@ -62,7 +62,7 @@ The `standalone` profile (`_quarto-standalone.yml`) turns on `embed-resources` a
 * `references.bib`: BibTeX entries cited with `[@key]`; the bibliography is rendered at build time onto the References slide.
 * `_quarto.yml` / `_quarto-standalone.yml`: Project defaults and the offline single-file profile.
 * `export.sh`: Quick script for exporting all required assets into an `output.zip`.
-* `tools/compare_charts.py`: Regenerates the Python-made charts on the *Libraries Compared* slides (Plotly figure JSON and matplotlib SVGs in `assets/compare/`); the deck itself never runs Python.
+* `tools/compare_charts.py`: Regenerates the shared data and the matplotlib SVGs for the *Libraries Compared* slides (in `assets/compare/`); the deck itself never runs Python.
 * `tools/shot.mjs`: Dev-only screenshot helper for checking the rendered slides at any screen size (`node tools/shot.mjs --help`; needs `npm install` in `tools/`).
 
 ## 📐 Responsive Layout
@@ -82,7 +82,7 @@ The deck doubles as a catalogue of elements to copy from, grouped into sections 
 * *Text, layout & code:* cards, callouts, stat tiles with count-up numbers, step-by-step equations, tabsets, a quiz, a paper-style results table (best/second-best marking), code highlighting, citations and footnotes.
 * *Images & media:* full-bleed images, framed figures with rounded corners, YouTube and web embeds, a local (offline) video, a before/after image slider, a logo wall.
 * *Diagrams & planning:* Mermaid Gantt charts and flowcharts, a draggable D3 network.
-* *Scientific plots for ML:* training curves, error bars, violins, quantiles, confusion matrix, ROC/PR, 3D embeddings, scaling laws, Pareto fronts, parallel coordinates, and the same charts side by side in Plotly (JavaScript and Python), Apache ECharts and matplotlib.
+* *Scientific plots for ML:* training curves, error bars, violins, quantiles, confusion matrix, ROC/PR, 3D embeddings, scaling laws, Pareto fronts, parallel coordinates, and the same charts side by side in Plotly, Apache ECharts and matplotlib.
 * *Showing model outputs:* an LLM conversation that types itself out, token-level attribution, a qualitative results grid.
 * *Presenting:* speaker tools, credits, a closing slide with a QR code to the hosted deck, and an appendix of backup slides and references that don't count towards the slide number.
 

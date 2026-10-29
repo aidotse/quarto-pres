@@ -1178,12 +1178,12 @@ The best 10% of runs share a learning rate near 3 × 10⁻⁴ and dropout around
 
 ## Libraries Compared: Training Curves {#compare-training}
 
-[The same data and colours, four ways. Hover the first three; matplotlib is a static image.]{.lead}
+[The same data and colours in three libraries. Hover the first two; matplotlib is a static image.]{.lead}
 
 ::: {.lib-compare}
 
 ::: {.lib-col}
-[Plotly from JavaScript]{.lib-name} [plotly.js 4.1 · 4.6 MB · interactive]{.lib-meta}
+[Plotly]{.lib-name} [plotly.js 4.1 · 4.6 MB · interactive]{.lib-meta}
 
 ```{=html}
 <div id="cmp-training-plotly" class="lib-chart"></div>
@@ -1208,21 +1208,6 @@ Deck.chart("cmp-training-plotly", (el) => {
       text: `<b>Best checkpoint</b><br>step ${(d.best.step / 1000).toFixed(1)}k · loss ${d.best.loss.toFixed(3)}`,
       arrowcolor: c.accent, arrowwidth: 2, arrowhead: 0 }],
   }), Deck.config);
-});
-</script>
-```
-:::
-
-::: {.lib-col}
-[Plotly from Python]{.lib-name} [plotly.py 7.1 → same plotly.js · interactive]{.lib-meta}
-
-```{=html}
-<div id="cmp-training-python" class="lib-chart"></div>
-<script>
-// Figure JSON exported from Python (tools/compare_charts.py), as a {python} cell would embed it
-Deck.chart("cmp-training-python", (el) => {
-  const fig = CompareData.python.training;
-  Plotly.newPlot(el, fig.data, fig.layout, Deck.config);
 });
 </script>
 ```
@@ -1273,7 +1258,7 @@ Deck.chart("cmp-training-echarts", (el) => {
 :::
 
 ::: {.lib-col}
-[matplotlib]{.lib-name} [3.11 · static SVG · 29 kB]{.lib-meta}
+[matplotlib]{.lib-name} [3.11 · static SVG · 31 kB]{.lib-meta}
 
 ![](assets/compare/training.svg){.lib-static fig-alt="Training and validation loss curves with shaded bands, drawn by matplotlib"}
 :::
@@ -1283,7 +1268,7 @@ Deck.chart("cmp-training-echarts", (el) => {
 ::: {.notes}
 All three draw the same numbers from `assets/compare/data.js`, written by `tools/compare_charts.py` together with the matplotlib SVGs. The deck's colours and font sizes are applied in each library: `Deck.layout()` for Plotly, `Deck.echarts()` for ECharts, `rcParams` for matplotlib.
 
-The Python-Plotly panel is built with `plotly.graph_objects` in `tools/compare_charts.py` and exported with `fig.to_json()`: the same JSON a `{python}` cell embeds when Quarto runs it through Jupyter. plotly.py 7.1 bundles plotly.js 4.1.1 and this deck vendors 4.1.2, so both Plotly panels are drawn by the same engine and look the same. The difference is the workflow: Python and pandas for the data, but Python and Jupyter are needed wherever the deck is rendered, CI included (this deck avoids that by exporting the JSON once).
+Plotly figures made in Python (`plotly.graph_objects`, e.g. in a `{python}` cell) are drawn by the same plotly.js, so they look like the first panel apart from styling defaults. The JavaScript route keeps the build free of Python and Jupyter. To reuse a figure from an analysis notebook, export `fig.to_json()` once into a `.js` file under `assets/` and draw it with `Plotly.newPlot`.
 :::
 
 ## Libraries Compared: Bars with Error Bars {#compare-bars}
@@ -1293,7 +1278,7 @@ The Python-Plotly panel is built with `plotly.graph_objects` in `tools/compare_c
 ::: {.lib-compare}
 
 ::: {.lib-col}
-[Plotly from JavaScript]{.lib-name} [`error_y` · built in]{.lib-meta}
+[Plotly]{.lib-name} [`error_y` · built in]{.lib-meta}
 
 ```{=html}
 <div id="cmp-bars-plotly" class="lib-chart"></div>
@@ -1308,25 +1293,10 @@ Deck.chart("cmp-bars-plotly", (el) => {
   Plotly.newPlot(el, traces, Deck.layout({
     font: { size: 18 }, barmode: "group", bargap: 0.22, bargroupgap: 0.08, barcornerradius: 4,
     hoverlabel: { font: { size: 18 } }, margin: { l: 10, r: 10, t: 10, b: 10 },
-    legend: { font: { size: 18 } },
+    legend: { font: { size: 18 }, traceorder: "normal", orientation: "v", y: 1.0, yanchor: "bottom" },
     xaxis: { tickfont: { size: 17, color: c.body }, showgrid: false },
     yaxis: { title: { text: "Accuracy (%)", font: { size: 19 } }, tickfont: { size: 17 }, range: [0, 100] },
   }), Deck.config);
-});
-</script>
-```
-:::
-
-::: {.lib-col}
-[Plotly from Python]{.lib-name} [`error_y` · same as JavaScript]{.lib-meta}
-
-```{=html}
-<div id="cmp-bars-python" class="lib-chart"></div>
-<script>
-// Figure JSON exported from Python (tools/compare_charts.py), as a {python} cell would embed it
-Deck.chart("cmp-bars-python", (el) => {
-  const fig = CompareData.python.bars;
-  Plotly.newPlot(el, fig.data, fig.layout, Deck.config);
 });
 </script>
 ```
@@ -1360,8 +1330,8 @@ Deck.chart("cmp-bars-echarts", (el) => {
       tooltip: { show: false } },
   ]);
   Deck.echarts(el, {
-    grid: { left: 70, right: 10, top: 44, bottom: 30 },
-    legend: { left: 0, top: 0, data: d.models.map((m) => m.name) },
+    grid: { left: 70, right: 10, top: 112, bottom: 30 },
+    legend: { left: 0, top: 0, orient: "vertical", itemGap: 8, data: d.models.map((m) => m.name) },
     tooltip: { trigger: "item", formatter: (p) => `${p.seriesName}<br><b>${p.value.toFixed(1)}%</b> ± ${d.models[p.seriesIndex / 2].e[p.dataIndex].toFixed(1)}` },
     xAxis: { type: "category", data: d.benchmarks, axisLabel: { color: c.body } },
     yAxis: { type: "value", min: 0, max: 100, name: "Accuracy (%)", nameLocation: "middle", nameGap: 48 },
