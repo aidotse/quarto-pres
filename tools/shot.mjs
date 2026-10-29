@@ -4,6 +4,7 @@
 //   node tools/shot.mjs                                  every slide at 1920x1080
 //   node tools/shot.mjs results-table 12 --size 1920x1080,820x1180
 //   node tools/shot.mjs --list                           numbers, ids and titles
+//   node tools/shot.mjs 1 --fresh training-curves        also open the deck directly on a slide
 //
 // Slides are given by id or by number (DOM order, so uncounted appendix slides
 // are included). Images go to shots/<W>x<H>/<nn>-<id>.png. Exits non-zero if
@@ -21,10 +22,13 @@ const USAGE = `usage: node tools/shot.mjs [slide ...] [options]
   --wait MS         settle time per slide for charts and animations, default 1500
   --out DIR         output directory, default shots/
   --offline         block all network requests and report what was blocked
+  --fresh ID,...    after the run, also load the deck directly on these slides (as a
+                    reload or shared link would) and fail if a chart there stays empty;
+                    include a non-16:9 --size, where the canvas is resized during startup
   --list            print slide numbers, ids and titles instead of screenshots
   --html PATH|URL   deck to open, default index.html`;
 
-const opts = { size: "1920x1080", frags: "all", wait: "1500", out: "shots", html: null };
+const opts = { size: "1920x1080", frags: "all", wait: "1500", out: "shots", html: null, fresh: "" };
 const flags = new Set(), targets = [];
 const argv = process.argv.slice(2);
 for (let i = 0; i < argv.length; i++) {
@@ -49,7 +53,8 @@ const browser = await chromium.launch();
 const errors = [], blocked = new Set();
 let failed = false;
 
-for (const [width, height] of sizes) {
+// A page with error collection (and request blocking for --offline)
+async function openPage(width, height) {
   const page = await browser.newPage({ viewport: { width, height } });
   page.on("pageerror", (e) => errors.push(`${width}x${height} pageerror: ${e.message}`));
   page.on("console", (m) => {
@@ -67,6 +72,11 @@ for (const [width, height] of sizes) {
       return r.abort();
     });
   }
+  return page;
+}
+
+for (const [width, height] of sizes) {
+  const page = await openPage(width, height);
   await page.goto(url);
   await page.waitForFunction(() => window.Reveal && Reveal.isReady());
 
@@ -103,6 +113,24 @@ for (const [width, height] of sizes) {
     console.log(file);
   }
   await page.close();
+
+  // Deck code that only runs on startup (e.g. drawing the first slide's charts)
+  // is never exercised above, because the run always starts on the title slide.
+  for (const id of opts.fresh.split(",").filter(Boolean)) {
+    const n = slides.findIndex((s) => s.id === id) + 1;
+    if (!n) { console.error(`no slide "${id}" for --fresh (try --list)`); failed = true; continue; }
+    const fresh = await openPage(width, height);
+    await fresh.goto(`${url.split("#")[0]}#/${id}`);
+    await fresh.waitForFunction(() => window.Reveal && Reveal.isReady());
+    await fresh.waitForTimeout(Number(opts.wait));
+    const empty = await fresh.evaluate(() =>
+      [...Reveal.getCurrentSlide().querySelectorAll(".chart, .lib-chart")].filter((el) => !el.querySelector("svg, canvas")).map((el) => el.id));
+    if (empty.length) errors.push(`${width}x${height} fresh #/${id}: empty chart ${empty.join(", ")}`);
+    const file = path.join(dir, `${String(n).padStart(2, "0")}-${id}-fresh.png`);
+    await fresh.screenshot({ path: file });
+    console.log(file);
+    await fresh.close();
+  }
 }
 await browser.close();
 
