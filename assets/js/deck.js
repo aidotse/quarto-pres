@@ -1,4 +1,5 @@
-/* Deck helpers: shared chart theme, slide-aware chart init, count-up numbers.
+/* Deck helpers: shared chart theme, slide-aware chart init, count-up numbers,
+   sparklines, typewriter fragments, token highlighting and QR codes.
 
    Charts are registered from inline <script> blocks in index.qmd and only
    drawn the first time their slide becomes visible (hidden slides have no
@@ -172,6 +173,89 @@
     }
   }
 
+  /* ---------- typewriter  (fragment with class "typewriter") ---------- */
+
+  /* Types the fragment's text out when it is revealed. Nested fragments are
+     left alone so they can appear on a later click. */
+  const typing = new Set();
+
+  function typewrite(el) {
+    if (!el._tw) {
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+        acceptNode: (n) => (n.parentElement.closest(".fragment") === el && n.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT),
+      });
+      el._tw = [];
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) el._tw.push([n, n.textContent]);
+    }
+    const parts = el._tw;
+    const total = parts.reduce((s, [, t]) => s + t.length, 0);
+    const caret = document.createElement("span");
+    caret.className = "caret";
+    const job = { el, done: false };
+    const finish = () => {
+      job.done = true;
+      for (const [n, t] of parts) n.textContent = t;
+      caret.remove();
+      typing.delete(job);
+    };
+    job.finish = finish;
+    typing.add(job);
+    el.style.minHeight = `${el.offsetHeight}px`; // keep the final size while typing
+    for (const [n] of parts) n.textContent = "";
+    const t0 = performance.now(), cps = 110;
+    const tick = (now) => {
+      if (job.done) return;
+      const typed = Math.floor(((now - t0) / 1000) * cps);
+      let left = typed;
+      for (const [n, t] of parts) {
+        const k = Math.min(t.length, Math.max(0, left));
+        n.textContent = t.slice(0, k);
+        if (k < t.length) { n.after(caret); break; }
+        left -= t.length;
+      }
+      if (typed >= total) finish();
+      else requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  /* ---------- token highlighting ---------- */
+
+  /* Deck.tokens(el, [[token, score 0-1], ...]): one chip per token, coloured by
+     score once the container gets the "lit" class. A leading space marks a word start. */
+  Deck.tokens = function (el, pairs) {
+    el.replaceChildren();
+    pairs.forEach(([tok, score], i) => {
+      if (tok.startsWith(" ")) el.append(" ");
+      const span = document.createElement("span");
+      span.className = "tok" + (score > 0.55 ? " hi" : "");
+      span.textContent = tok.trimStart();
+      span.dataset.score = score.toFixed(2);
+      span.style.setProperty("--s", score);
+      span.style.setProperty("--i", i);
+      el.append(span);
+    });
+  };
+
+  /* ---------- QR codes  (<div class="qr" data-url="..." data-fallback="...">) ---------- */
+
+  /* Encodes data-url, else the deck's own address (when served over http),
+     else data-fallback. Fills a sibling .qr-url with the encoded link. */
+  function qrCodes() {
+    if (!window.qrcode) return;
+    for (const el of document.querySelectorAll(".qr")) {
+      const here = /^https?:$/.test(location.protocol) ? location.href.split("#")[0] : "";
+      const url = el.dataset.url || here || el.dataset.fallback;
+      if (!url) continue;
+      const qr = qrcode(0, "M");
+      qr.addData(url);
+      qr.make();
+      el.innerHTML = qr.createSvgTag({ cellSize: 10, margin: 0, scalable: true, alt: `QR code for ${url}` });
+      const label = (el.closest(".qr-card") || el.parentElement).querySelector(".qr-url");
+      if (label) label.textContent = url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    }
+  }
+
   /* ---------- lifecycle ---------- */
 
   function fragmentIndex(slide) {
@@ -187,7 +271,11 @@
       if (!el || !slide.contains(el)) continue;
       if (!entry.done) {
         entry.done = true;
+        entry.stale = false;
         entry.init(el);
+      } else if (entry.stale) {
+        entry.stale = false;
+        if (el.classList.contains("js-plotly-plot")) Plotly.Plots.resize(el);
       }
       if (entry.step) entry.step(el, fragmentIndex(slide));
     }
@@ -195,17 +283,32 @@
     if (animate) countUp(slide);
   }
 
+  /* Called by responsive.js after the canvas size changes. Charts on hidden
+     slides have no size, so they are only marked and resized when shown. */
+  Deck.resize = function () {
+    for (const entry of registry) entry.stale = true;
+    for (const el of document.querySelectorAll(".spark[data-values]")) el.replaceChildren();
+    if (window.Reveal && Reveal.isReady()) activate(Reveal.getCurrentSlide(), { animate: false });
+  };
+
   function boot() {
     readColors();
     fixSliders();
+    qrCodes();
     const printing = /print-pdf/i.test(window.location.search);
     if (printing) {
       for (const s of Reveal.getSlides()) activate(s, { animate: false });
       return;
     }
     activate(Reveal.getCurrentSlide());
-    Reveal.on("slidechanged", (e) => activate(e.currentSlide));
-    Reveal.on("fragmentshown", (e) => activate(Reveal.getCurrentSlide(), { animate: false }));
+    Reveal.on("slidechanged", (e) => {
+      for (const job of [...typing]) job.finish();
+      activate(e.currentSlide);
+    });
+    Reveal.on("fragmentshown", (e) => {
+      for (const f of e.fragments) if (f.classList.contains("typewriter")) typewrite(f);
+      activate(Reveal.getCurrentSlide(), { animate: false });
+    });
     Reveal.on("fragmenthidden", (e) => activate(Reveal.getCurrentSlide(), { animate: false }));
     Reveal.on("overviewshown", () => Reveal.getSlides().forEach((s) => activate(s, { animate: false })));
   }

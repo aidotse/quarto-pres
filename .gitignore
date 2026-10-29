@@ -23,3 +23,17 @@ Thumbs.db
 
 /.quarto/
 **/*.quarto_ipynb
+
+# --- Local agent/tool state ---
+.serena/
+.claude/settings.local.json
+.claude/.headroom*
+CLAUDE.local.md
+
+# --- Dev tools (tools/shot.mjs) ---
+node_modules/
+shots/
+
+# --- CI build output (when reproducing CI locally) ---
+/public/
+/standalone/
