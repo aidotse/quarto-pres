@@ -1,0 +1,6 @@
+# quarto render index.qmd --profile standalone
+# Single self-contained index.html that works fully offline.
+format:
+  revealjs:
+    embed-resources: true
+    chalkboard: false   # the chalkboard plugin cannot be embedded

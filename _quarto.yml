@@ -1,0 +1,9 @@
+project:
+  type: default
+
+# Options the `standalone` profile (_quarto-standalone.yml) needs to override
+# live here: document front matter would take precedence over a profile.
+format:
+  revealjs:
+    chalkboard:
+      buttons: false
