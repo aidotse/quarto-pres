@@ -90,6 +90,40 @@
     toImageButtonOptions: { format: "svg", filename: "figure" },
   };
 
+  /* Apache ECharts counterpart of Deck.layout(): registers a "deck" theme with
+     the same colours, fonts and tooltip look, then draws `option` into `el`
+     with the SVG renderer (stays crisp when Reveal scales the slide). */
+  Deck.echarts = function (el, option) {
+    const c = Deck.colors;
+    if (!Deck.echarts.theme) {
+      const axisCommon = {
+        axisLine: { lineStyle: { color: c.axis } },
+        axisTick: { show: false },
+        axisLabel: { color: c.muted, fontSize: 17, fontFamily: c.font, margin: 10 },
+        splitLine: { lineStyle: { color: c.grid } },
+        nameTextStyle: { color: c.body, fontSize: 19, fontFamily: c.font },
+      };
+      Deck.echarts.theme = {
+        color: c.series,
+        backgroundColor: "transparent",
+        textStyle: { fontFamily: c.font, color: c.body },
+        categoryAxis: { ...axisCommon, splitLine: { show: false } },
+        valueAxis: axisCommon,
+        legend: { textStyle: { color: c.body, fontSize: 18 }, itemWidth: 22, itemHeight: 12 },
+        tooltip: {
+          backgroundColor: "#0b151e", borderColor: "rgba(255,255,255,0.18)",
+          textStyle: { color: "#ffffff", fontSize: 18, fontFamily: c.font },
+        },
+      };
+      echarts.registerTheme("deck", Deck.echarts.theme);
+    }
+    const chart = echarts.init(el, "deck", { renderer: "svg" });
+    // No entry animation in print/PDF export, so the captured frame is final
+    if (/print-pdf/i.test(window.location.search)) option = { ...option, animation: false };
+    chart.setOption(option);
+    return chart;
+  };
+
   /* Hex colour -> rgba() string, for translucent fills (bands, areas). */
   Deck.alpha = function (hex, a) {
     const n = parseInt(hex.replace("#", ""), 16);
@@ -266,6 +300,8 @@
 
   function activate(slide, { animate = true } = {}) {
     if (!slide) return;
+    // responsive.js can trigger the first draw before boot() runs
+    if (!Deck.colors.series) readColors();
     for (const entry of registry) {
       const el = document.getElementById(entry.id);
       if (!el || !slide.contains(el)) continue;
@@ -276,6 +312,7 @@
       } else if (entry.stale) {
         entry.stale = false;
         if (el.classList.contains("js-plotly-plot")) Plotly.Plots.resize(el);
+        else if (window.echarts && echarts.getInstanceByDom(el)) echarts.getInstanceByDom(el).resize();
       }
       if (entry.step) entry.step(el, fragmentIndex(slide));
     }

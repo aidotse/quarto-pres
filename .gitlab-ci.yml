@@ -39,7 +39,7 @@ smoke-test:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   script:
     - (cd tools && npm ci && npx playwright install --with-deps chromium)
-    - node tools/shot.mjs --html public/index.html --offline --frags none --wait 300 --size 1920x1080,820x1180 --out shots/lean
+    - node tools/shot.mjs --html public/index.html --offline --frags none --wait 300 --size 1920x1080,820x1180 --fresh training-curves --out shots/lean
     - node tools/shot.mjs --html standalone/index.html --offline --frags none --wait 300 --out shots/standalone
   artifacts:
     when: always

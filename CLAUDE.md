@@ -37,8 +37,8 @@ Each JS/CSS file documents itself in its header comment; read that before changi
 - `assets/js/deck.js`: chart theme and helpers. Charts register with `Deck.chart` / `Deck.steps` and are drawn when their slide is first shown.
 - `assets/js/responsive.js`: fits the canvas to the window and sets `body.portrait`, `--slide-w` and `--slide-h`. Off in `?print-pdf`. Keep `scrollActivationWidth: 0`: `null` doesn't disable Reveal's mobile scroll view.
 - `references.bib`: cited as `[@key]`. Quarto makes the References slide `.smaller`, so `#refs` sizes are relative to 0.7em.
-- `assets/vendor/`: Plotly, D3, img-comparison-slider, qrcode-generator and the STIX Two Math font, so both builds work offline. Mermaid ships with Quarto.
-- `tools/`: dev-only helpers with their own `package.json`; not deployed.
+- `assets/vendor/`: Plotly, D3, img-comparison-slider, qrcode-generator, Apache ECharts and the STIX Two Math font, so both builds work offline. Mermaid ships with Quarto. ECharts charts use `Deck.echarts(el, option)` (theme + SVG renderer) instead of `Deck.layout()`.
+- `tools/`: dev-only helpers with their own `package.json`; not deployed. `compare_charts.py` (`tools/requirements.txt`) regenerates `assets/compare/`; change the data or Python styling there, never the generated files.
 - `data-state="hide-ui"` on a slide hides the global logo and footer.
 
 ## Gotchas
@@ -62,7 +62,7 @@ node tools/shot.mjs results-table 14 --size 1920x1080,820x1180   # slide ids or 
 node tools/shot.mjs --offline                                     # every slide, network blocked
 ```
 
-The script exits non-zero on page JavaScript errors and on missing files (it names the file). By default every fragment is shown (`--frags none` for the initial state); slides with typewriter text or long animations may need a longer `--wait`. Check `--offline` against the standalone build too; only the YouTube and Datawrapper iframes should be blocked. For interactions (hover, drag, sliders), write a throwaway Playwright script in the same style.
+The script exits non-zero on page JavaScript errors and on missing files (it names the file). A normal run always starts on the title slide; `--fresh <slide-id>` also opens the deck directly on a slide (as a reload or shared link does), which is the only way to catch startup-order bugs. Those only appear at non-16:9 sizes, where `responsive.js` resizes the canvas during startup. By default every fragment is shown (`--frags none` for the initial state); slides with typewriter text or long animations may need a longer `--wait`. Check `--offline` against the standalone build too; only the YouTube and Datawrapper iframes should be blocked. For interactions (hover, drag, sliders), write a throwaway Playwright script in the same style.
 
 ## Deployment
 
@@ -72,6 +72,6 @@ Two parallel CI configs do the same thing and must be kept in sync:
 
 Both pin the Quarto version (`QUARTO_VERSION`, currently 1.9.38, also stated in the README's Prerequisites); bump all three together and re-check the deck. Dependabot (`.github/dependabot.yml`) bumps the actions and `tools/` monthly, but not Quarto.
 
-- On every PR/MR, into any branch, `test-build` renders the lean and standalone builds, assembles `public/` like the deploy, and runs `tools/shot.mjs --offline` on both. That catches JS errors and files missing from the deployed set. On GitHub, the rendered decks and screenshots are uploaded as the `deck-preview` artifact.
+- On every PR/MR, into any branch, `test-build` renders the lean and standalone builds, assembles `public/` like the deploy, and runs `tools/shot.mjs --offline` on both (plus `--fresh training-curves`). That catches JS errors and files missing from the deployed set. On GitHub, the rendered decks and screenshots are uploaded as the `deck-preview` artifact.
 - `test-build` is the required status check on `main`, and admins can't bypass it. Keep the job name, and don't add path filters that skip it, or PRs into `main` will wait forever for a check that never reports.
 - On `main` (push or manual run) the CI renders, then copies **only** `index.html`, `index_files/`, `assets/` and `style.css` into `public/` and deploys. Any new local resource referenced by the deck must live under `assets/`, or else be added to both CI configs and `export.sh`.
