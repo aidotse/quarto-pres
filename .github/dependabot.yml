@@ -1,0 +1,19 @@
+# Monthly, grouped update PRs for the CI actions and the dev-only tools/.
+# Quarto itself is pinned separately (QUARTO_VERSION in both CI configs).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: [ "*" ]
+
+  - package-ecosystem: npm
+    directory: /tools
+    schedule:
+      interval: monthly
+    groups:
+      tools:
+        patterns: [ "*" ]

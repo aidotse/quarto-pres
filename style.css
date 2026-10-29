@@ -561,6 +561,36 @@ body.reveal-viewport {
 }
 
 /* =========================================================================
+   Framed figure  (![Optional caption](figure.png){.framed})
+   A white rounded card for figures with a light background (plots, diagrams,
+   logos), so they don't end in hard edges on the dark slide. Sized by the
+   canvas, overriding the inline size Reveal's auto-stretch would set.
+   Match an off-white figure by setting --frame on the slide:
+   ## Title {style="--frame: #fffdf9"}  (Quarto drops style on the image itself).
+   ========================================================================= */
+
+.reveal img.framed {
+  display: block;
+  box-sizing: content-box;
+  width: auto !important;
+  height: auto !important;
+  max-width: calc(100% - 48px);
+  max-height: calc(var(--slide-h, 1080px) * 0.6);
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--frame, #ffffff);
+  border-radius: 18px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+}
+.reveal .slide img.framed + p.caption,
+.reveal .slide figure:has(> img.framed) > figcaption {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 0.6em;
+  color: var(--muted);
+}
+
+/* =========================================================================
    Before / after image comparison slider
    ========================================================================= */
 
@@ -628,6 +658,386 @@ body.reveal-viewport {
 .reveal .panel-tabset pre code { padding: 20px 26px; line-height: 1.5; }
 
 /* =========================================================================
+   Agenda  (ordered list of section links)
+   ========================================================================= */
+
+.reveal .agenda ol {
+  list-style: none;
+  counter-reset: agenda;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(3, auto);
+  column-gap: 80px;
+}
+.reveal .agenda li {
+  counter-increment: agenda;
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: baseline;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+.reveal .agenda li::before {
+  content: counter(agenda, decimal-leading-zero);
+  grid-row: span 2;
+  font-family: monospace;
+  color: var(--accent);
+  font-size: 0.85em;
+}
+.reveal .agenda a {
+  color: var(--ink);
+  font-weight: bold;
+  transition: color 0.2s;
+}
+.reveal .agenda a:hover { color: var(--accent); }
+.reveal .agenda .agenda-desc {
+  grid-column: 2;
+  color: var(--muted);
+  font-size: 0.6em;
+  margin-top: 4px;
+}
+
+/* =========================================================================
+   Callouts (Quarto .callout-note / -tip / -warning / -important / -caution)
+   ========================================================================= */
+
+.reveal div.callout.callout-style-default {
+  --c: var(--blue);
+  border: none;
+  border-left: 6px solid var(--c);
+  border-radius: 0 8px 8px 0;
+  background: color-mix(in srgb, var(--c) 9%, transparent);
+  margin: 0;
+  font-size: 0.62em;
+  height: 100%;
+  box-sizing: border-box;
+}
+.reveal div.callout-tip.callout-style-default       { --c: var(--green); }
+.reveal div.callout-warning.callout-style-default   { --c: var(--orange); }
+.reveal div.callout-important.callout-style-default { --c: var(--red); }
+.reveal div.callout-caution.callout-style-default   { --c: var(--orange); }
+.reveal div.callout.callout-style-default div.callout-title {
+  background: none !important;
+  border: none;
+  opacity: 1;
+  padding-top: 8px;
+}
+.reveal div.callout.callout-style-default div.callout-title p { color: var(--c); }
+.reveal div.callout .callout-content { color: var(--body); }
+
+/* =========================================================================
+   Results table  (**best**, [second]{.second}, row with [ours]{.ours})
+   ========================================================================= */
+
+.reveal .results-table table { font-size: 0.68em; }
+.reveal .results-table td,
+.reveal .results-table th { white-space: nowrap; vertical-align: baseline; }
+.reveal .results-table strong { color: var(--ink); }
+.reveal .results-table .pm {
+  color: var(--muted);
+  font-size: 0.7em;
+  margin-left: 4px;
+}
+.reveal .second {
+  text-decoration: underline;
+  text-decoration-color: var(--muted);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+.reveal .results-table tr:has(span.ours) td {
+  background-color: rgba(254, 203, 0, 0.07) !important;
+  border-top: 1px solid rgba(254, 203, 0, 0.35);
+}
+.reveal span.ours {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--surface);
+  font-weight: bold;
+  font-size: 0.7em;
+  padding: 0 12px;
+  border-radius: 12px;
+  margin-left: 8px;
+  vertical-align: 2px;
+}
+
+/* =========================================================================
+   Asides & footnotes  (::: aside, ^[footnote]) pinned above the footer
+   ========================================================================= */
+
+.reveal .slides section.slide aside:not(.notes) {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 70px;
+  font-size: 0.42em;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.reveal .slides section.slide aside:not(.notes) p { margin: 0; }
+.reveal .slides section.slide.level2:has(> aside:not(.notes)) { padding-bottom: 150px; }
+.reveal .aside-footnotes { margin: 0; padding-left: 1.4em; }
+
+/* =========================================================================
+   References  (::: {#refs})
+   ========================================================================= */
+
+/* Quarto already marks the References slide .smaller (0.7em) */
+.reveal #refs {
+  font-size: 0.85em;
+  line-height: 1.45;
+}
+.reveal #refs .csl-entry {
+  margin-bottom: 18px;
+  padding-left: 2em;
+  text-indent: -2em;
+}
+
+/* =========================================================================
+   Local video
+   ========================================================================= */
+
+.reveal .video-frame {
+  margin: 0;
+  line-height: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  max-width: calc(var(--slide-h) * 1.2);
+}
+.reveal .video-frame video { width: 100%; max-width: 100%; max-height: none; display: block; }
+
+/* =========================================================================
+   Chat transcript  (::: {.msg .user who="..."}, ::: {.msg .bot who="..."})
+   ========================================================================= */
+
+.reveal .chat { align-items: start; }
+.reveal .msg {
+  position: relative;
+  padding: 22px 30px;
+  border-radius: 22px;
+  font-size: 0.64em;
+  line-height: 1.5;
+  margin-top: 44px;
+  box-sizing: border-box;
+}
+.reveal .msg::before {
+  content: attr(data-who);
+  position: absolute;
+  top: -38px;
+  font-family: monospace;
+  font-size: 0.72em;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.reveal .msg p { margin: 0 0 12px 0; }
+.reveal .msg p:last-child { margin-bottom: 0; }
+.reveal .msg.user {
+  background: #24384c;
+  color: var(--ink);
+  max-width: 70%;
+  margin-left: auto;
+  border-bottom-right-radius: 6px;
+}
+.reveal .msg.user::before { right: 8px; }
+.reveal .msg.bot {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-bottom-left-radius: 6px;
+}
+.reveal .msg.bot::before { left: 8px; }
+.reveal .msg.ours { border-color: rgba(254, 203, 0, 0.45); }
+.reveal .msg.ours::before { color: var(--accent); }
+.reveal .verdict {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 0.85em;
+  padding: 4px 16px;
+  border-radius: 16px;
+  margin-top: 6px;
+}
+.reveal .verdict.good { color: var(--green); background: rgba(76, 175, 80, 0.12); }
+.reveal .verdict.bad  { color: var(--red);   background: rgba(230, 57, 70, 0.12); }
+.reveal .caret {
+  display: inline-block;
+  width: 0.5em;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: -0.2em;
+  background: var(--accent);
+  animation: caret-blink 1s steps(1) infinite;
+}
+@keyframes caret-blink { 50% { opacity: 0; } }
+
+/* =========================================================================
+   Token attribution  (Deck.tokens)
+   ========================================================================= */
+
+.reveal .tokens {
+  font-size: 1.05em;
+  line-height: 2.3;
+  color: var(--ink);
+  margin-top: 30px;
+}
+.reveal .tok {
+  position: relative;
+  padding: 6px 4px;
+  margin: 0 2px;
+  border-radius: 6px;
+  box-shadow: inset 0 -3px 0 rgba(255, 255, 255, 0.12);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  transition-delay: calc(var(--i) * 30ms);
+}
+.reveal .tokens.lit .tok { background-color: rgba(254, 203, 0, calc(var(--s) * 0.9)); }
+.reveal .tokens.lit .tok.hi { color: var(--surface); }
+.reveal .tokens.lit .tok:hover { outline: 2px solid var(--ink); }
+.reveal .tokens.lit .tok:hover::after {
+  content: attr(data-score);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  background: var(--surface-raised);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  padding: 2px 12px;
+  font-size: 0.5em;
+  line-height: 1.6;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+}
+.reveal .scale-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.55em;
+}
+.reveal .scale-legend > p { display: contents; }
+.reveal .scale-bar {
+  width: 280px;
+  height: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: linear-gradient(to right, rgba(254, 203, 0, 0.04), rgba(254, 203, 0, 0.9));
+}
+
+/* =========================================================================
+   Qualitative results grid  ([![](img.jpg)]{.tile score="93.4"})
+   ========================================================================= */
+
+.reveal .qual-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.reveal .qual-grid > p { display: contents; }
+.reveal .qual-head {
+  font-family: monospace;
+  font-size: 0.45em;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-align: center;
+}
+.reveal .qual-head.hl { color: var(--accent); }
+.reveal .tile {
+  --ox: center;
+  --oy: center;
+  position: relative;
+  display: block;
+  line-height: 0;
+}
+.reveal .tile img {
+  width: 100%;
+  margin: 0;
+  border-radius: 6px;
+  transform-origin: var(--ox) var(--oy);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+/* Zoom towards the slide's interior so enlarged tiles stay on screen */
+.reveal .tile:nth-child(4n + 1) { --ox: left; }
+.reveal .tile:nth-child(4n)     { --ox: right; }
+.reveal .tile:nth-child(-n + 8) { --oy: top; }
+.reveal .tile:nth-last-child(-n + 4) { --oy: bottom; }
+.reveal .tile:hover { z-index: 5; }
+.reveal .tile:hover img {
+  transform: scale(1.9);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+.reveal .tile[data-score]::after {
+  content: "mIoU " attr(data-score);
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  background: rgba(11, 21, 30, 0.85);
+  color: #ffffff;
+  font-family: monospace;
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 2px 10px;
+  border-radius: 10px;
+}
+.reveal .tile[data-score]:hover::after { display: none; }
+
+/* =========================================================================
+   Closing slide with QR code
+   ========================================================================= */
+
+.reveal .closing .thanks {
+  display: block;
+  font-size: 3.4em;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.reveal .closing .thanks::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 10px;
+  margin-top: 40px;
+  border-radius: 5px;
+  background: var(--accent);
+}
+.reveal .closing .thanks-sub {
+  display: block;
+  margin-top: 30px;
+  font-size: 1.1em;
+}
+.reveal .contact { margin-top: 70px; font-size: 0.7em; }
+.reveal .contact p { margin: 0 0 14px 0; }
+.reveal .contact .kicker { display: inline-block; width: 110px; margin: 0; }
+.reveal .qr-card {
+  justify-self: center;
+  width: 440px;
+  padding: 36px;
+  box-sizing: border-box;
+  border-radius: 22px;
+  background: #ffffff;
+  color: var(--surface);
+  text-align: center;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+}
+.reveal .qr svg { display: block; width: 100%; height: auto; }
+.reveal .qr-label { display: block; margin-top: 22px; font-weight: bold; font-size: 0.6em; }
+.reveal .qr-url {
+  display: block;
+  margin-top: 6px;
+  font-family: monospace;
+  font-size: 0.42em;
+  color: #4b5b6b;
+  word-break: break-all;
+}
+
+/* =========================================================================
    Responsive layout
    The canvas size follows the window (assets/js/responsive.js). Each content
    slide is a full-height flex column: the title stays on top, blocks keep
@@ -647,7 +1057,7 @@ body.reveal-viewport {
   flex: none;
 }
 /* Captions and leads stay attached to the block they describe */
-.reveal .slides section.slide.level2:not(.center) > :not(h2):not(.lead):not(.chart-note):not(.compare-labels) {
+.reveal .slides section.slide.level2:not(.center) > :not(h2):not(.lead):not(.chart-note):not(.compare-labels):not(.caption) {
   margin-top: auto;
 }
 .reveal .slides section.slide.level2:not(.center)::after {
@@ -695,3 +1105,10 @@ body.reveal-viewport {
   margin-top: 60px;
   gap: 50px;
 }
+.portrait .reveal .msg.user { max-width: 90%; }
+.portrait .reveal .agenda ol { grid-template-columns: 1fr; grid-auto-flow: row; grid-template-rows: none; }
+.portrait .reveal .qr-card { width: 380px; }
+.portrait .reveal .contact { margin-top: 40px; }
+.portrait .reveal .results-table table { font-size: 0.56em; }
+.portrait .reveal .results-table .pm { display: block; margin-left: 0; }
+.portrait .reveal .results-table td:first-child { white-space: normal; }
