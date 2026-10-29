@@ -266,6 +266,8 @@
 
   function activate(slide, { animate = true } = {}) {
     if (!slide) return;
+    // responsive.js can trigger the first draw before boot() runs
+    if (!Deck.colors.series) readColors();
     for (const entry of registry) {
       const el = document.getElementById(entry.id);
       if (!el || !slide.contains(el)) continue;
