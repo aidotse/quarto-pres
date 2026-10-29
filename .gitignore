@@ -33,3 +33,7 @@ CLAUDE.local.md
 # --- Dev tools (tools/shot.mjs) ---
 node_modules/
 shots/
+
+# --- CI build output (when reproducing CI locally) ---
+/public/
+/standalone/

@@ -54,7 +54,10 @@ for (const [width, height] of sizes) {
   page.on("pageerror", (e) => errors.push(`${width}x${height} pageerror: ${e.message}`));
   page.on("console", (m) => {
     // Blocked requests surface as console errors; they are reported separately.
-    if (m.type() === "error" && !/net::ERR_FAILED/.test(m.text())) errors.push(`${width}x${height} console: ${m.text()}`);
+    if (m.type() !== "error" || /net::ERR_FAILED/.test(m.text())) return;
+    // A missing file only says "Failed to load resource"; name it.
+    const where = /Failed to load/.test(m.text()) ? ` (${m.location().url.replace(/^.*?\/(?=assets\/|index_files\/|style\.css)/, "")})` : "";
+    errors.push(`${width}x${height} console: ${m.text()}${where}`);
   });
   if (flags.has("offline")) {
     await page.route("**/*", (r) => {
